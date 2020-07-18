@@ -1,7 +1,7 @@
 const functions = require('firebase-functions');
 
 const stripe = require('stripe')(
-  'sk_test_51H4SlIKXmerujVEWDKLZ6b2uoMSnZ6PJGJyZtsF6FkkhzzPejsUzk0z7yxPLw7bjrSVgvICbSEjGREjKXCsVqzqA00KGoZtEcn',
+  'sk_test_51H4SlIKXmerujVEWDKLZ6b2uoM',
 );
 
 exports.completePaymentWithStripe = functions.https.onRequest(
