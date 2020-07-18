@@ -14,7 +14,7 @@ import { Icon, Input } from 'react-native-elements';
 import { CreditCardInput } from "react-native-credit-card-input";
 import stripe, { PaymentCardTextField } from 'tipsi-stripe';
 stripe.setOptions({
-    publishableKey: 'pk_test_51Gv5A8JVSIGR903OAYbKIR9NYHKxE0riAnmiR5onEGejbzbRFj1i4j4ePe4VRdSXy2ZMpf5zFlQbpZkn7tr0MdEi00P7ImVO21'
+    publishableKey: 'pk_test_51Gv5A8JVSIGR903OAYbKIR9NYHKxE0riA**********Athena**********nmiR5onEGejbzbRFj1i4j4ePe4VRdSXy2ZMpf5zFlQbpZkn7tr0MdEi00P7ImVO21'
 });
 
 import { connect } from 'react-redux';
