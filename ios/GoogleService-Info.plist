@@ -3,13 +3,13 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>823801675801-9ucvr9u6lcv2q10u0bp3h41obsa9doji.apps.googleusercontent.com</string>
+	<string>823801675801-9ucvr9u6lcv2q10u0bp3h41ob**************Athena*************sa9doji.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.823801675801-9ucvr9u6lcv2q10u0bp3h41obsa9doji</string>
+	<string>com.googleusercontent.apps.823801675801-9ucvr9u6lcv2q**********Athena********************10u0bp3h41obsa9doji</string>
 	<key>API_KEY</key>
-	<string>AIzaSyA1OTIQ7Wg_9y9ayltf5KdKlS5D_DETcCQ</string>
+	<string>AIzaSyA1OTIQ7Wg_9y9a*************Athena****************yltf5KdKlS5D_DETcCQ</string>
 	<key>GCM_SENDER_ID</key>
-	<string>823801675801</string>
+	<string>823*******Athena*********801675801</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
@@ -29,7 +29,7 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:823801675801:ios:a721bbac99eb88a0a7aa88</string>
+	<string>1:823801675801:ios:a721bba****************Athena************c99eb88a0a7aa88</string>
 	<key>DATABASE_URL</key>
 	<string>https://kwik-35758.firebaseio.com</string>
 </dict>
