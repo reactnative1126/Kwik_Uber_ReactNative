@@ -1,1 +1,0 @@
-export const cloud_function_server_url = 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXX';
