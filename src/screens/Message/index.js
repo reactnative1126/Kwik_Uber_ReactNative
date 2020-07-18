@@ -43,8 +43,8 @@ class Message extends Component {
     }
 
     getMessage = async callback => {
-        const { user_info, driver_info } = this.props;
-        await firebase.database().ref('messages').child(driver_info.driver_id).child(user_info.user_id).on("child_added", snapshot => callback(this.parse(snapshot)));
+        const { user_info, customer_info } = this.props;
+        await firebase.database().ref('messages').child(user_info.user_id).child(customer_info.customer_id).on("child_added", snapshot => callback(this.parse(snapshot)));
     };
 
     parse = message => {
@@ -55,7 +55,7 @@ class Message extends Component {
     }
 
     onSend = async messages => {
-        const { user_info, driver_info } = this.props;
+        const { user_info, customer_info } = this.props;
         messages.forEach(item => {
             const message = {
                 text: item.text,
@@ -66,7 +66,7 @@ class Message extends Component {
                     avatar: user_info.profile_pic == null ? 'https://i.dlpng.com/static/png/6966798_preview.png' : configs.baseURL + '/uploads/' + user_info.profile_pic
                 }
             };
-            var database = firebase.database().ref('messages').child(driver_info.driver_id).child(user_info.user_id);
+            var database = firebase.database().ref('messages').child(user_info.user_id).child(customer_info.customer_id);
             database.push(message);
         })
     }
@@ -96,7 +96,7 @@ class Message extends Component {
                     </TouchableOpacity>
                 </View>
                 <View style={{ flex: 9, justifyContent: 'center' }}>
-                    <Text style={{ marginLeft: 20, fontSize: 16, fontWeight: 'bold', color: '#000' }}>{this.props.driver_info.driver_name}</Text>
+                    <Text style={{ marginLeft: 20, fontSize: 16, fontWeight: 'bold', color: '#000' }}>{this.props.customer_info.customer_name}</Text>
                 </View>
             </View>
         );
@@ -327,7 +327,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => {
     return {
         user_info: state.account.user_info,
-        driver_info: state.account.driver_info
+        customer_info: state.account.customer_info
     }
 }
 export default connect(mapStateToProps, undefined)(Message)

@@ -35,12 +35,12 @@ android_library(
 
 android_build_config(
     name = "build_config",
-    package = "com.opriqx.kwikco",
+    package = "com.opriqx.kwikgo",
 )
 
 android_resource(
     name = "res",
-    package = "com.opriqx.kwikco",
+    package = "com.opriqx.kwikgo",
     res = "src/main/res",
 )
 

@@ -13,9 +13,8 @@ import {
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { Icon } from 'react-native-elements';
 import MapView, { Marker, AnimatedRegion, Polyline, PROVIDER_GOOGLE } from "react-native-maps";
+import Geolocation from '@react-native-community/geolocation';
 navigator.geolocation = require('@react-native-community/geolocation');
-// import Geolocation from 'react-native-geolocation-service';
-// import Geolocation from '@react-native-community/geolocation';
 // import Geocoder from 'react-native-geocoding';
 import haversine from "haversine";
 
@@ -94,103 +93,103 @@ class Track extends React.Component {
         return haversine(prevLatLng, newLatLng) || 0;
     };
 
-    // async onArrived() {
-    //     const { status } = this.state;
-    //     const { user_info, booking_info } = this.props;
-    //     if (status == 1) {
-    //         this.setState({ status: 2 });
-    //     } else if (status == 3) {
-    //         this.setState({ status: 4, loading: true });
-    //         // this.watchID = await navigator.geolocation.watchPosition(location => {
-    //         let location = await Geolocation.getCurrentPosition({});
-    //         if (location) {
-    //             let latlng = location.coords.latitude + ',' + location.coords.longitude;
-    //             fetch('https://maps.googleapis.com/maps/api/geocode/json?latlng=' + latlng + '&key=' + configs.google_map_key)
-    //                 .then((response) => response.json())
-    //                 .then((responseJson) => {
-    //                     this.setState({
-    //                         source_lat: location.lcoords.atitude,
-    //                         source_long: location.coords.longitude
-    //                     })
-    //                     API.post('/start_ride', {
-    //                         booking_id: booking_info.booking_id ? booking_info.booking_id : 0,
-    //                         source_address: responseJson.results[0].formatted_address,
-    //                         source_lat: location.coords.latitude,
-    //                         source_long: location.coords.longitude,
-    //                         api_token: user_info.api_token
-    //                     }).then((resp) => {
-    //                         if (resp.data.success == 1) {
-    //                             this.setState({ status: 4, loading: false });
-    //                         } else {
-    //                             console.log(resp.data.message);
-    //                             this.setState({ loading: false });
-    //                         }
-    //                     }).catch((error) => {
-    //                         console.log(error);
-    //                         this.setState({ loading: false });
-    //                     });
-    //                 }).catch((error) => {
-    //                     console.error(error);
-    //                     this.setState({ loading: false });
-    //                 })
-    //         }
-    //     } else if (status == 4) {
-    //         this.setState({ loading: true });
-    //         // this.watchID = await navigator.geolocation.watchPosition(location => {
-    //         let location = await Geolocation.getCurrentPosition({});
-    //         if (location) {
-    //             let latlng = location.coords.latitude + ',' + location.coords.longitude;
-    //             fetch('https://maps.googleapis.com/maps/api/geocode/json?latlng=' + latlng + '&key=' + configs.google_map_key)
-    //                 .then((response) => response.json())
-    //                 .then((responseJson) => {
-    //                     let startLoc = '"' + this.state.source_lat + ', ' + this.state.source_long + '"';
-    //                     let destLoc = '"' + location.coords.latitude + ', ' + location.coords.longitude + '"';
-    //                     let arriveTime = this.getDriverTime(startLoc, destLoc);
-    //                     API.post('/destination_reached', {
-    //                         booking_id: booking_info.booking_id ? booking_info.booking_id : 0,
-    //                         dest_address: responseJson.results[0].formatted_address,
-    //                         dest_lat: location.coords.latitude,
-    //                         dest_long: location.coords.longitude,
-    //                         driving_time: arriveTime.time_in_secs,
-    //                         total_kms: arriveTime.distance_in_meter,
-    //                         api_token: user_info.api_token
-    //                     }).then((resp) => {
-    //                         if (resp.data.success == 1) {
-    //                             this.setState({ loading: false });
-    //                             this.props.navigation.navigate('Finish', { amount: resp.data.amount });
-    //                         } else {
-    //                             console.log(resp.data.message);
-    //                             this.setState({ loading: false });
-    //                         }
-    //                     }).catch((error) => {
-    //                         console.log(error);
-    //                         this.setState({ loading: false });
-    //                     });
-    //                 }).catch((error) => {
-    //                     console.error(error);
-    //                     this.setState({ loading: false });
-    //                 })
-    //         };
-    //     }
-    // }
+    async onArrived() {
+        const { status } = this.state;
+        const { user_info, booking_info } = this.props;
+        if (status == 1) {
+            this.setState({ status: 2 });
+        } else if (status == 3) {
+            this.setState({ status: 4, loading: true });
+            // this.watchID = await navigator.geolocation.watchPosition(location => {
+            let location = await Geolocation.getCurrentPosition({});
+            if (location) {
+                let latlng = location.coords.latitude + ',' + location.coords.longitude;
+                fetch('https://maps.googleapis.com/maps/api/geocode/json?latlng=' + latlng + '&key=' + configs.google_map_key)
+                    .then((response) => response.json())
+                    .then((responseJson) => {
+                        this.setState({
+                            source_lat: location.lcoords.atitude,
+                            source_long: location.coords.longitude
+                        })
+                        API.post('/start_ride', {
+                            booking_id: booking_info.booking_id ? booking_info.booking_id : 0,
+                            source_address: responseJson.results[0].formatted_address,
+                            source_lat: location.coords.latitude,
+                            source_long: location.coords.longitude,
+                            api_token: user_info.api_token
+                        }).then((resp) => {
+                            if (resp.data.success == 1) {
+                                this.setState({ status: 4, loading: false });
+                            } else {
+                                console.log(resp.data.message);
+                                this.setState({ loading: false });
+                            }
+                        }).catch((error) => {
+                            console.log(error);
+                            this.setState({ loading: false });
+                        });
+                    }).catch((error) => {
+                        console.error(error);
+                        this.setState({ loading: false });
+                    })
+            }
+        } else if (status == 4) {
+            this.setState({ loading: true });
+            // this.watchID = await navigator.geolocation.watchPosition(location => {
+            let location = await Geolocation.getCurrentPosition({});
+            if (location) {
+                let latlng = location.coords.latitude + ',' + location.coords.longitude;
+                fetch('https://maps.googleapis.com/maps/api/geocode/json?latlng=' + latlng + '&key=' + configs.google_map_key)
+                    .then((response) => response.json())
+                    .then((responseJson) => {
+                        let startLoc = '"' + this.state.source_lat + ', ' + this.state.source_long + '"';
+                        let destLoc = '"' + location.coords.latitude + ', ' + location.coords.longitude + '"';
+                        let arriveTime = this.getDriverTime(startLoc, destLoc);
+                        API.post('/destination_reached', {
+                            booking_id: booking_info.booking_id ? booking_info.booking_id : 0,
+                            dest_address: responseJson.results[0].formatted_address,
+                            dest_lat: location.coords.latitude,
+                            dest_long: location.coords.longitude,
+                            driving_time: arriveTime.time_in_secs,
+                            total_kms: arriveTime.distance_in_meter,
+                            api_token: user_info.api_token
+                        }).then((resp) => {
+                            if (resp.data.success == 1) {
+                                this.setState({ loading: false });
+                                this.props.navigation.navigate('Finish', { amount: resp.data.amount });
+                            } else {
+                                console.log(resp.data.message);
+                                this.setState({ loading: false });
+                            }
+                        }).catch((error) => {
+                            console.log(error);
+                            this.setState({ loading: false });
+                        });
+                    }).catch((error) => {
+                        console.error(error);
+                        this.setState({ loading: false });
+                    })
+            };
+        }
+    }
 
-    // getDriverTime(startLoc, destLoc) {
-    //     return new Promise(function (resolve, reject) {
-    //         fetch(`https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=${startLoc}&destinations=${destLoc}&key=${configs.google_map_key}`)
-    //             .then((response) => response.json())
-    //             .then((res) =>
-    //                 resolve({
-    //                     distance_in_meter: res.rows[0].elements[0].distance.value,
-    //                     time_in_secs: res.rows[0].elements[0].duration.value,
-    //                     timein_text: res.rows[0].elements[0].duration.text
-    //                 })
-    //             )
-    //             .catch(error => {
-    //                 reject(error);
-    //                 this.setState({ loading: false });
-    //             });
-    //     });
-    // }
+    getDriverTime(startLoc, destLoc) {
+        return new Promise(function (resolve, reject) {
+            fetch(`https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=${startLoc}&destinations=${destLoc}&key=${configs.google_map_key}`)
+                .then((response) => response.json())
+                .then((res) =>
+                    resolve({
+                        distance_in_meter: res.rows[0].elements[0].distance.value,
+                        time_in_secs: res.rows[0].elements[0].duration.value,
+                        timein_text: res.rows[0].elements[0].duration.text
+                    })
+                )
+                .catch(error => {
+                    reject(error);
+                    this.setState({ loading: false });
+                });
+        });
+    }
 
     renderHeader() {
         return (
@@ -218,107 +217,107 @@ class Track extends React.Component {
         );
     }
 
-    // renderDetails() {
-    //     const { customer_info, booking_info } = this.props;
-    //     return (
-    //         <View style={{
-    //             position: 'absolute',
-    //             justifyContent: 'center',
-    //             alignItems: 'center',
-    //             width: wp('100.0%'),
-    //             height: hp('100.0%'),
-    //             backgroundColor: '#000000BF',
-    //             zIndex: 1001
-    //         }}>
-    //             <View style={{
-    //                 width: '90%',
-    //                 height: 350,
-    //                 backgroundColor: '#FFF',
-    //                 borderRadius: 10,
-    //                 alignItems: 'center'
-    //             }}>
-    //                 <View style={{
-    //                     flexDirection: 'row',
-    //                     justifyContent: 'space-between',
-    //                     alignItems: 'center',
-    //                     paddingLeft: 20, paddingRight: 20,
-    //                     width: '100%',
-    //                     height: 50,
-    //                     borderBottomWidth: 1,
-    //                     borderBottomColor: '#DDD'
-    //                 }}>
-    //                     <View />
-    //                     <Text style={{ fontSize: 18, marginVertical: 2 }}>{'Passenger Details'}</Text>
-    //                     <TouchableOpacity onPress={() => this.setState({ menu: false })}>
-    //                         <Icon name='close-circle-outline' type='material-community' size={25} />
-    //                     </TouchableOpacity>
-    //                 </View>
-    //                 <Image source={customer_info.profile_pic == null ? images.img_avatar : { uri: configs.baseUrl + '/uploads/' + customer_info.profile_pic }} style={{ width: 100, height: 100, borderRadius: 50, marginTop: 20 }} />
-    //                 <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 20, marginBottom: 20 }}>
-    //                     <Text style={{ fontSize: 16, fontWeight: 'bold' }}>{customer_info.customer_name}</Text>
-    //                 </View>
-    //                 {/* <Rating rating={4.5} color='#FFCC01' size={40} /> */}
+    renderDetails() {
+        const { customer_info, booking_info } = this.props;
+        return (
+            <View style={{
+                position: 'absolute',
+                justifyContent: 'center',
+                alignItems: 'center',
+                width: wp('100.0%'),
+                height: hp('100.0%'),
+                backgroundColor: '#000000BF',
+                zIndex: 1001
+            }}>
+                <View style={{
+                    width: '90%',
+                    height: 350,
+                    backgroundColor: '#FFF',
+                    borderRadius: 10,
+                    alignItems: 'center'
+                }}>
+                    <View style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        paddingLeft: 20, paddingRight: 20,
+                        width: '100%',
+                        height: 50,
+                        borderBottomWidth: 1,
+                        borderBottomColor: '#DDD'
+                    }}>
+                        <View />
+                        <Text style={{ fontSize: 18, marginVertical: 2 }}>{'Passenger Details'}</Text>
+                        <TouchableOpacity onPress={() => this.setState({ menu: false })}>
+                            <Icon name='close-circle-outline' type='material-community' size={25} />
+                        </TouchableOpacity>
+                    </View>
+                    <Image source={customer_info.profile_pic == null ? images.img_avatar : { uri: configs.baseUrl + '/uploads/' + customer_info.profile_pic }} style={{ width: 100, height: 100, borderRadius: 50, marginTop: 20 }} />
+                    <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 20, marginBottom: 20 }}>
+                        <Text style={{ fontSize: 16, fontWeight: 'bold' }}>{customer_info.customer_name}</Text>
+                    </View>
+                    {/* <Rating rating={4.5} color='#FFCC01' size={40} /> */}
 
-    //                 <View style={{ flexDirection: 'row', width: '100%', marginTop: 20 }}>
-    //                     <TouchableOpacity style={styles.rideBtn2} onPress={() => this.props.navigation.navigate('Message')}>
-    //                         <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#00963D' }}>MESSAGE</Text>
-    //                     </TouchableOpacity>
-    //                     <TouchableOpacity style={styles.rideBtn2} onPress={() => Linking.openURL(`tel:+14157654856`)}>
-    //                         <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#00963D' }}>CALL</Text>
-    //                     </TouchableOpacity>
-    //                 </View>
-    //             </View>
-    //         </View>
-    //     )
-    // }
+                    <View style={{ flexDirection: 'row', width: '100%', marginTop: 20 }}>
+                        <TouchableOpacity style={styles.rideBtn2} onPress={() => this.props.navigation.navigate('Message')}>
+                            <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#00963D' }}>MESSAGE</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.rideBtn2} onPress={() => Linking.openURL(`tel:+14157654856`)}>
+                            <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#00963D' }}>CALL</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </View>
+        )
+    }
 
-    // renderAlert() {
-    //     const { customer_info, booking_info } = this.props;
-    //     return (
-    //         <View style={{
-    //             position: 'absolute',
-    //             justifyContent: 'center',
-    //             alignItems: 'center',
-    //             width: wp('100.0%'),
-    //             height: hp('100.0%'),
-    //             backgroundColor: '#000000BF',
-    //             zIndex: 1001
-    //         }}>
-    //             <View style={{
-    //                 width: '90%',
-    //                 height: 250,
-    //                 backgroundColor: '#FFF',
-    //                 borderRadius: 10,
-    //                 alignItems: 'center'
-    //             }}>
-    //                 <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 40, padding: 20 }}>
-    //                     <Text style={{ color: '#555', marginBottom: 10, textAlign: 'center', fontSize: 18 }}>{'Are you sure you have arrived at pickup location of passenger? If yes click OK else Cancel.'}</Text>
-    //                 </View>
+    renderAlert() {
+        const { customer_info, booking_info } = this.props;
+        return (
+            <View style={{
+                position: 'absolute',
+                justifyContent: 'center',
+                alignItems: 'center',
+                width: wp('100.0%'),
+                height: hp('100.0%'),
+                backgroundColor: '#000000BF',
+                zIndex: 1001
+            }}>
+                <View style={{
+                    width: '90%',
+                    height: 250,
+                    backgroundColor: '#FFF',
+                    borderRadius: 10,
+                    alignItems: 'center'
+                }}>
+                    <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 40, padding: 20 }}>
+                        <Text style={{ color: '#555', marginBottom: 10, textAlign: 'center', fontSize: 18 }}>{'Are you sure you have arrived at pickup location of passenger? If yes click OK else Cancel.'}</Text>
+                    </View>
 
-    //                 <View style={{ flexDirection: 'row', width: '100%' }}>
-    //                     <TouchableOpacity style={[styles.rideBtn1, { backgroundColor: '#A8A8A8' }]} onPress={() => {
-    //                         this.setState({
-    //                             status: 1,
-    //                             latitude: parseFloat(booking_info.dest_lat ? booking_info.dest_lat : 0),
-    //                             longitude: parseFloat(booking_info.dest_long ? booking_info.dest_long : 0)
-    //                         })
-    //                     }}>
-    //                         <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#FFF' }}>CANCEL</Text>
-    //                     </TouchableOpacity>
-    //                     <TouchableOpacity style={styles.rideBtn1} onPress={() => {
-    //                         this.setState({
-    //                             status: 3,
-    //                             latitude: parseFloat(booking_info.dest_lat ? booking_info.dest_lat : 0),
-    //                             longitude: parseFloat(booking_info.dest_long ? booking_info.dest_long : 0)
-    //                         })
-    //                     }}>
-    //                         <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#FFF' }}>OK</Text>
-    //                     </TouchableOpacity>
-    //                 </View>
-    //             </View>
-    //         </View>
-    //     )
-    // }
+                    <View style={{ flexDirection: 'row', width: '100%' }}>
+                        <TouchableOpacity style={[styles.rideBtn1, { backgroundColor: '#A8A8A8' }]} onPress={() => {
+                            this.setState({
+                                status: 1,
+                                latitude: parseFloat(booking_info.dest_lat ? booking_info.dest_lat : 0),
+                                longitude: parseFloat(booking_info.dest_long ? booking_info.dest_long : 0)
+                            })
+                        }}>
+                            <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#FFF' }}>CANCEL</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.rideBtn1} onPress={() => {
+                            this.setState({
+                                status: 3,
+                                latitude: parseFloat(booking_info.dest_lat ? booking_info.dest_lat : 0),
+                                longitude: parseFloat(booking_info.dest_long ? booking_info.dest_long : 0)
+                            })
+                        }}>
+                            <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#FFF' }}>OK</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </View>
+        )
+    }
 
     render() {
         const { status } = this.state;
@@ -384,7 +383,7 @@ class Track extends React.Component {
                             {parseFloat(this.state.distanceTravelled).toFixed(2)} km away
                                 </Text>
                     </View>
-                    {/* <View style={{ width: wp('100.0%'), height: 50, padding: 10, backgroundColor: '#FFF', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <View style={{ width: wp('100.0%'), height: 50, padding: 10, backgroundColor: '#FFF', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                             <View style={styles.srcCircle} />
                             <Text>{booking_info.source_address ? booking_info.source_address.substring(1, 30) : ''}...</Text>
@@ -392,10 +391,10 @@ class Track extends React.Component {
                     </View>
                     <TouchableOpacity style={styles.rideBtn} onPress={() => this.onArrived()}>
                         <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#FFF' }}>{status == 1 ? 'ARRIVING...' : status == 2 ? 'ARRIVED' : status == 3 ? 'SLIDE TO BEGIN' : 'SLIDE TO END TRIP'}</Text>
-                    </TouchableOpacity> */}
+                    </TouchableOpacity>
                 </SafeAreaView>
-                {/* {this.state.status == 2 ? this.renderAlert() : null}
-                {this.state.menu ? this.renderDetails() : null} */}
+                {this.state.status == 2 ? this.renderAlert() : null}
+                {this.state.menu ? this.renderDetails() : null}
                 <Loading loading={this.state.loading} />
             </View>
         );
@@ -518,7 +517,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => {
     return {
         user_info: state.account.user_info,
-        driver_info: state.account.driver_info,
+        customer_info: state.account.customer_info,
         booking_info: state.booking.booking_info
     }
 }

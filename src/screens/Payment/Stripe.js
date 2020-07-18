@@ -14,7 +14,7 @@ import { Icon, Input } from 'react-native-elements';
 import { CreditCardInput } from "react-native-credit-card-input";
 import stripe, { PaymentCardTextField } from 'tipsi-stripe';
 stripe.setOptions({
-    publishableKey: 'pk_test_51H4SlIKXmerujVEWooyVCXJ6mooI1a1TfP6mFUhKBr4Z33Tj2Uehe6SOcmUNilMbSZcF7bgW6WSEnQMckYVknrjl00TmuqThu6'
+    publishableKey: 'pk_test_51Gv5A8JVSIGR903OAYbKIR9NYHKxE0riAnmiR5onEGejbzbRFj1i4j4ePe4VRdSXy2ZMpf5zFlQbpZkn7tr0MdEi00P7ImVO21'
 });
 
 import { connect } from 'react-redux';
@@ -63,9 +63,9 @@ class Stripe extends Component {
             var totalPrice = this.state.amount;
             const token = await stripe.createTokenWithCard(this.state.params);
             alert(token.tokenId);
-            await axios({
+            axios({
                 method: 'POST',
-                url: 'https://us-central1-kwik-35758.cloudfunctions.net/completePaymentWithStripe',
+                url: 'http://localhost:5000/kwik-35758/us-central1/paymentWithStripe',
                 data: {
                     amount: Math.round(totalPrice),
                     currency: 'usd',
@@ -163,6 +163,24 @@ const styles = StyleSheet.create({
         shadowRadius: 2,
         elevation: 10,
     },
+    rideBtn: {
+        position: 'absolute',
+        bottom: 10,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginLeft: 20,
+        marginTop: 5,
+        marginBottom: 5,
+        width: '100%',
+        height: 50,
+        borderRadius: 10,
+        backgroundColor: '#00963D',
+        shadowColor: '#000',
+        shadowOpacity: 0.8,
+        shadowOffset: { height: 1, width: 1 },
+        shadowRadius: 2,
+        elevation: 5,
+    },
     bodyContainer: {
         flex: 1,
         flexDirection: 'column',
@@ -220,9 +238,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginTop: 20,
         marginBottom: 5,
-        width: '90%',
+        width: '100%',
         height: 50,
-        margin: 20,
         borderRadius: 10,
         backgroundColor: '#00963D',
         shadowColor: '#000',

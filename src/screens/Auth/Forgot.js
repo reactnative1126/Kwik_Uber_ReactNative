@@ -47,7 +47,7 @@ export default class Forgot extends Component {
         const emailValid = this.validateEmail();
         if (emailValid) {
             this.setState({ loading: true });
-            API.post('/forgot_password', {
+            await API.post('/forgot_password', {
                 email: this.state.email
             }).then((resp) => {
                 if (resp.data.success == 1) {

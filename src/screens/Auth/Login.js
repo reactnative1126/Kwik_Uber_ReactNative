@@ -20,7 +20,7 @@ import Geolocation from 'react-native-geolocation-service';
 import Geocoder from 'react-native-geocoding';
 
 import * as firebase from 'firebase';
-import { connect, setDeviceToken } from 'react-redux';
+import { connect } from 'react-redux';
 import { setUser } from '@modules/account/actions';
 import { Loading } from '@components';
 import { verifyEmail, verifyLength } from '@constants/functions';
@@ -68,12 +68,13 @@ class Login extends Component {
                     firebase.auth().signInWithCredential(credential).then((resp) => {
                         if (resp && resp.additionalUserInfo.isNewUser == true) {
                             API.post('/user_register', {
-                                user_type: 'C',
+                                user_type: 'D',
                                 user_name: resp.user.displayName,
                                 user_uid: this.props.device_token,
                                 email: resp.user.email,
                                 mobno: resp.user.phoneNumber == null ? '123456789' : resp.user.phoneNumber,
                                 password: '123456',
+                                licence_image: '',
                                 gender: 1,
                                 address: json.results[0].formatted_address,
                                 mode: Platform.OS,
@@ -96,18 +97,23 @@ class Login extends Component {
                             });
                         } else {
                             API.post('/user_login', {
-                                user_type: 'C',
+                                user_type: 'D',
                                 email: resp.user.email,
                                 password: '123456',
                                 fcm_id: this.props.device_token,
                                 device_token: this.props.device_token
                             }).then((resp) => {
                                 if (resp.data.success == 1) {
-                                    this.setState({ loading: false });
-                                    AsyncStorage.setItem('logged', 'true');
-                                    AsyncStorage.setItem('user_info', JSON.stringify(resp.data.data.userinfo));
-                                    this.props.setUser(resp.data.data.userinfo);
-                                    this.props.navigation.reset({ routes: [{ name: 'App' }] });
+                                    if (resp.data.data.userinfo.vehicle_info == null) {
+                                        this.setState({ loading: false });
+                                        this.refs.toast.show("Please register vehicle type from Adminitrator.", DURATION.LENGTH_LONG);
+                                    } else {
+                                        this.setState({ loading: false });
+                                        AsyncStorage.setItem('logged', 'true');
+                                        AsyncStorage.setItem('user_info', JSON.stringify(resp.data.data.userinfo));
+                                        this.props.setUser(resp.data.data.userinfo);
+                                        this.props.navigation.reset({ routes: [{ name: 'App' }] });
+                                    }
                                 } else {
                                     this.setState({ loading: false });
                                     this.refs.toast.show(resp.data.message, DURATION.LENGTH_LONG);
@@ -121,7 +127,7 @@ class Login extends Component {
                         this.setState({ loading: false });
                         this.refs.toast.show(error.message, DURATION.LENGTH_LONG);
                     });
-                }).catch((error) => {
+                }).catch(error => {
                     this.setState({ loading: false });
                     this.refs.toast.show(error.message, DURATION.LENGTH_LONG);
                 });
@@ -151,18 +157,23 @@ class Login extends Component {
                     } else {
                         this.setState({ passwordMsg: null, loading: true });
                         API.post('/user_login', {
-                            user_type: 'C',
+                            user_type: 'D',
                             email: email,
                             password: password,
                             fcm_id: this.props.device_token,
                             device_token: this.props.device_token
                         }).then((resp) => {
                             if (resp.data.success == 1) {
-                                this.setState({ loading: false });
-                                AsyncStorage.setItem('logged', 'true');
-                                AsyncStorage.setItem('user_info', JSON.stringify(resp.data.data.userinfo));
-                                this.props.setUser(resp.data.data.userinfo);
-                                this.props.navigation.reset({ routes: [{ name: 'App' }] });
+                                if (resp.data.data.userinfo.vehicle_info == null) {
+                                    this.setState({ loading: false });
+                                    this.refs.toast.show("Please register vehicle type from Adminitrator.", DURATION.LENGTH_LONG);
+                                } else {
+                                    this.setState({ loading: false });
+                                    AsyncStorage.setItem('logged', 'true');
+                                    AsyncStorage.setItem('user_info', JSON.stringify(resp.data.data.userinfo));
+                                    this.props.setUser(resp.data.data.userinfo);
+                                    this.props.navigation.reset({ routes: [{ name: 'App' }] });
+                                }
                             } else {
                                 this.setState({ loading: false });
                                 this.refs.toast.show(resp.data.message, DURATION.LENGTH_LONG);
@@ -365,9 +376,6 @@ const mapDispatchToProps = dispatch => {
     return {
         setUser: (data) => {
             dispatch(setUser(data))
-        },
-        setDeviceToken: (data) => {
-            dispatch(setDeviceToken(data))
         }
     }
 }

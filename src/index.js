@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { store, persistor } from './store';
 import AppContainer from '@navigations';
-// navigator.geolocation = require('@react-native-community/geolocation');
+navigator.geolocation = require('@react-native-community/geolocation');
 import Geocoder from 'react-native-geocoding';
 import configs from '@constants/configs';
 Geocoder.init(configs.google_map_key);
@@ -18,10 +18,11 @@ if (!firebase.apps.length) {
     projectId: "kwik-35758",
     storageBucket: "kwik-35758.appspot.com",
     messagingSenderId: "823801675801",
-    appId: "1:823801675801:web:957693dfffe871d0a7aa88",
-    measurementId: "G-DR0CT23XH9"
+    appId: "1:823801675801:web:ddbd391ba348d148a7aa88",
+    measurementId: "G-KHE3P3DWD6"
   })
 }
+
 export default class App extends Component {
     render() {
         return (

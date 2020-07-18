@@ -12,7 +12,7 @@ export const setDeviceToken = (data) => ({
     type: types.SET_DEVICE_TOKEN,
     payload: data
 });
-export const setDriver = (data) => ({
-    type: types.SET_DRIVER,
+export const setCustomer = (data) => ({
+    type: types.SET_CUSTOMER,
     payload: data
 });

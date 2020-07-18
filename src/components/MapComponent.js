@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Image } from 'react-native';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 
 export default class MapComponent extends Component {
@@ -28,10 +27,8 @@ export default class MapComponent extends Component {
                         <Marker.Animated
                             coordinate={{ latitude: item.driver_lat, longitude: item.driver_long }}
                             key={index}
-                        // image={require('@assets/images/available_car.png')}
-                        >
-                            <Image source={require('@assets/images/available_car.png')} style={{ width: 40, height: 20 }} />
-                        </Marker.Animated>
+                            image={require('@assets/images/available_car.png')}
+                        ></Marker.Animated>
                     )
                 })
                     : null

@@ -22,4 +22,5 @@ export default {
     img_lyft: require('@assets/images/lyft.png'),
     img_driver: require('@assets/images/driver.png'),
     img_avatar: require('@assets/images/customer.png'),
+    img_arriving: require('@assets/images/arriving.png'),
 }

@@ -28,7 +28,7 @@ class Signup extends React.Component {
         }
     }
 
-    async onRegister(name, email, mobile, password) {
+    async onRegister(name, email, mobile, password, image) {
         this.setState({ loading: true });
         if (Platform.OS === "ios") {
             const authorizationLevel = "always";
@@ -39,17 +39,34 @@ class Signup extends React.Component {
                 });
             }
         }
+        // alert(JSON.stringify(image))
+
+        let formData = new FormData();
+        formData.append("license_image", {
+          name: image.filename,
+          type: image.mime,
+          uri: Platform.OS === "android" ? image.uri : image.path
+        })
+
+        var image_name = '';
+        API.post('/upload_image',
+          formData
+        ).then(response => {
+            image_name = response.request._response;
+        })
+        
         Geolocation.getCurrentPosition((position) => {
             this.refs.toast.show("GeoLocation", DURATION.LENGTH_LONG);
             Geocoder.from(position.coords.latitude, position.coords.longitude).then(json => {
                 this.refs.toast.show("GeoCorder", DURATION.LENGTH_LONG);
                 API.post('/user_register', {
-                    user_type: 'C',
+                    user_type: 'D',
                     user_name: name,
                     user_uid: this.props.device_token,
                     email: email,
                     mobno: mobile,
                     password: password,
+                    license_image: image_name,
                     gender: 1,
                     address: json.results[0].formatted_address,
                     mode: Platform.OS,
@@ -62,7 +79,7 @@ class Signup extends React.Component {
                         AsyncStorage.setItem('logged', 'true');
                         AsyncStorage.setItem('user_info', JSON.stringify(resp.data.data.userinfo));
                         this.props.setUser(resp.data.data.userinfo);
-                        this.props.navigation.navigate('App');
+                        this.props.navigation.pop();
                     } else {
                         this.setState({ loading: false });
                         this.refs.toast.show(resp.data.message, DURATION.LENGTH_LONG);
@@ -79,14 +96,14 @@ class Signup extends React.Component {
             this.setState({ loading: false });
             this.refs.toast.show(error.message, DURATION.LENGTH_LONG);
         }, {
-            enableHighAccuracy: true, timeout: 20000, maximumAge: 1000
+            enableHighAccuracy: true, timeout: 30000, maximumAge: 1000
         });
     }
 
     render() {
         return (
             <View style={styles.container} >
-                <Register onRegister={(name, email, mobile, password) => this.onRegister(name, email, mobile, password)} navigation={this.props.navigation} />
+                <Register onRegister={(name, email, mobile, password, image) => this.onRegister(name, email, mobile, password, image)} navigation={this.props.navigation} />
                 <Loading loading={this.state.loading} />
                 <Toast ref="toast" position='top' positionValue={50} fadeInDuration={750} fadeOutDuration={1000} opacity={0.8} />
             </View>

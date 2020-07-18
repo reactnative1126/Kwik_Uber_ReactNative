@@ -1,10 +1,6 @@
-import axios from 'axios';
-import configs from './configs';
-
 export const navOptionHandler = () => ({
     headerShown: false,
     animationEnabled: false,
-    gesturesEnabled: false
 });
 
 export const verifyEmail = (value) => {
@@ -40,24 +36,29 @@ export const verifyLength = (value, length) => {
 
 
 export function SendPushNotification(token, title, body, data) {
-    axios({
+    fetch('https://fcm.googleapis.com/fcm/send', {
         method: 'POST',
-        url: 'https://fcm.googleapis.com/fcm/send',
         headers: {
+            'Accept': 'application/json',
             'Content-Type': 'application/json',
-            'Authorization': 'key=AAAAv85oABk:APA91bE79ukX5VyYu3d_tDIV_z2dcOZ5xBQ0niseDJYHp7rUeJ4YhkbV0bvyiUehyobBpzQOdUh1UEsvy2_p_Hm-fbtxMxubL9Hs9nlWW5DaVGzUDdz1rteTTh9NiGsm64n2z8FJG5TX'
+            'accept-encoding': 'gzip, deflate',
+            'host': 'exp.host'
         },
-        data: { 
-            to: token, 
-            notification: {
-                title: title, 
-                body: body, 
-                data: data 
-            }
-        },
-    }).then((response) => {
-        console.log(response);
-    });
+        body: JSON.stringify({
+            "to": token,
+            "title": title,
+            "body": body,
+            "data": data,
+            "priority": "high",
+            "sound": "default",
+            "channelId": "messages"
+        }),
+    }).then((response) => response.json())
+        .then((responseJson) => {
+            return responseJson
+        })
+        .catch((error) => { console.log(error) });
 }
+
 
 

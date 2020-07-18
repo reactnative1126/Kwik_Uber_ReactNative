@@ -78,17 +78,6 @@ export function DrawerContent(props) {
                 <Drawer.Section style={styles.bottomDrawerSection} >
                     <DrawerItem
                         icon={(color, size) => (
-                            <Icon name='payment' type='material' color={color} size={size} />
-                        )}
-                        label="PAYMENT"
-                        onPress={() => {
-                            props.navigation.navigate('Payment');
-                        }}
-                    />
-                </Drawer.Section>
-                <Drawer.Section style={styles.bottomDrawerSection} >
-                    <DrawerItem
-                        icon={(color, size) => (
                             <Icon name='support' type='font-awesome' color={color} size={size} />
                         )}
                         label="SUPPORT AND FAQ"

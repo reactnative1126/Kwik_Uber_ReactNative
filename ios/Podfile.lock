@@ -26,8 +26,6 @@ PODS:
     - FBSDKShareKit/Share (= 7.1.0)
   - FBSDKShareKit/Share (7.1.0):
     - FBSDKCoreKit (~> 7.1.0)
-  - Firebase/Analytics (6.3.0):
-    - Firebase/Core
   - Firebase/Core (6.3.0):
     - Firebase/CoreOnly
     - FirebaseAnalytics (= 6.0.2)
@@ -361,7 +359,7 @@ PODS:
     - React
   - react-native-maps (0.27.1):
     - React
-  - react-native-safe-area-context (3.0.7):
+  - react-native-safe-area-context (3.0.6):
     - React
   - react-native-sms (1.11.0):
     - React
@@ -426,7 +424,7 @@ PODS:
     - ReactCommon/callinvoker (= 0.62.2)
   - RNCMaskedView (0.1.10):
     - React
-  - RNDateTimePicker (2.5.0):
+  - RNDateTimePicker (2.4.2):
     - React
   - RNFirebase (5.6.0):
     - Firebase/Core
@@ -439,9 +437,23 @@ PODS:
     - React
   - RNGestureHandler (1.6.1):
     - React
+  - RNImageCropPicker (0.32.0):
+    - React-Core
+    - React-RCTImage
+    - RNImageCropPicker/QBImagePickerController (= 0.32.0)
+    - TOCropViewController
+  - RNImageCropPicker/QBImagePickerController (0.32.0):
+    - React-Core
+    - React-RCTImage
+    - TOCropViewController
   - RNReanimated (1.9.0):
     - React
   - RNScreens (2.9.0):
+    - React
+  - RNSound (0.11.0):
+    - React
+    - RNSound/Core (= 0.11.0)
+  - RNSound/Core (0.11.0):
     - React
   - RNVectorIcons (6.6.0):
     - React
@@ -449,13 +461,13 @@ PODS:
   - tipsi-stripe (7.5.3):
     - React
     - Stripe (~> 14.0.1)
+  - TOCropViewController (2.5.3)
   - Yoga (1.14.0)
 
 DEPENDENCIES:
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
   - FBReactNativeSpec (from `../node_modules/react-native/Libraries/FBReactNativeSpec`)
-  - Firebase/Analytics (~> 6.3.0)
   - Firebase/Core (~> 6.3.0)
   - Firebase/Database (~> 6.3.0)
   - Firebase/Functions (~> 6.3.0)
@@ -498,8 +510,10 @@ DEPENDENCIES:
   - "RNDateTimePicker (from `../node_modules/@react-native-community/datetimepicker`)"
   - RNFirebase (from `../node_modules/react-native-firebase/ios`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
+  - RNImageCropPicker (from `../node_modules/react-native-image-crop-picker`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
+  - RNSound (from `../node_modules/react-native-sound`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - Stripe (~> 14.0.0)
   - tipsi-stripe (from `../node_modules/tipsi-stripe`)
@@ -536,6 +550,7 @@ SPEC REPOS:
     - PromisesObjC
     - Protobuf
     - Stripe
+    - TOCropViewController
 
 EXTERNAL SOURCES:
   DoubleConversion:
@@ -610,10 +625,14 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-firebase/ios"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
+  RNImageCropPicker:
+    :path: "../node_modules/react-native-image-crop-picker"
   RNReanimated:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
     :path: "../node_modules/react-native-screens"
+  RNSound:
+    :path: "../node_modules/react-native-sound"
   RNVectorIcons:
     :path: "../node_modules/react-native-vector-icons"
   tipsi-stripe:
@@ -670,7 +689,7 @@ SPEC CHECKSUMS:
   react-native-geolocation-service: 141e33bdb179bcba10b216ee13962611e21f2be4
   react-native-google-maps: 0a989abda71059db2caa98b9dacca7a8f38a47d0
   react-native-maps: f4b89da81626ad7f151a8bfcb79733295d31ce5c
-  react-native-safe-area-context: c39fc20a20cd66ebf1d56c6f8b8711142fbfee98
+  react-native-safe-area-context: b26361b9f0a5a17c371a80bb37b88493ea68c77e
   react-native-sms: 31fbb9d6ebb565ad32e409eaf9dc70329936a129
   React-RCTActionSheet: f41ea8a811aac770e0cc6e0ad6b270c644ea8b7c
   React-RCTAnimation: 49ab98b1c1ff4445148b72a3d61554138565bad0
@@ -683,16 +702,19 @@ SPEC CHECKSUMS:
   React-RCTVibration: 4356114dbcba4ce66991096e51a66e61eda51256
   ReactCommon: ed4e11d27609d571e7eee8b65548efc191116eb3
   RNCMaskedView: f5c7d14d6847b7b44853f7acb6284c1da30a3459
-  RNDateTimePicker: 8d8eaff487659a32ad04f6690b33b3248ef9026d
+  RNDateTimePicker: aae6a45c4ddb5125f3c7a39683e21c34c25cda45
   RNFirebase: 37daa9a346d070f9f6ee1f3b4aaf4c8e3b1d5d1c
   RNGestureHandler: 8f09cd560f8d533eb36da5a6c5a843af9f056b38
+  RNImageCropPicker: fc4b4d2a4d7176eeb6442fa191ba56493c14b6d6
   RNReanimated: b5ccb50650ba06f6e749c7c329a1bc3ae0c88b43
   RNScreens: c526239bbe0e957b988dacc8d75ac94ec9cb19da
+  RNSound: c980916b596cc15c8dcd2f6ecd3b13c4881dbe20
   RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4
   Stripe: 4305b646743612854819fb5d5cf67aaeb93577c0
   tipsi-stripe: 41299d30e9b906413315eeb1b94607aaac9b6781
+  TOCropViewController: 20a14b6a7a098308bf369e7c8d700dc983a974e6
   Yoga: 3ebccbdd559724312790e7742142d062476b698e
 
-PODFILE CHECKSUM: 8f0fb56f937b5ac4af7b6cd4f171a10f633811bc
+PODFILE CHECKSUM: 7156689c937dfdaee9d99a2d592c46f0f279a94c
 
 COCOAPODS: 1.9.1

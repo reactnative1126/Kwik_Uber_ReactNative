@@ -6,10 +6,8 @@ import Logout from './Auth/Logout';
 
 import Map from './Map';
 import Track from './Map/Track';
-import Confirm from './Confirm';
-import Accepts from './Accepts';
+import Finish from './Map/Finish';
 import Message from './Message';
-import Rating from './Rating';
 
 import Profile from './Profile';
 import Password from './Profile/Password';
@@ -23,7 +21,7 @@ import About from './About';
 
 export {
     Splash, Login, Signup, Forgot, Logout,
-    Map, Track, Confirm, Accepts, Message, Rating,
+    Map, Track, Finish, Message,
 
     Profile, Password, Booking, Payment, Stripe, Contact, About,
 }

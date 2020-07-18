@@ -14,6 +14,7 @@ import {
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Icon, Input } from 'react-native-elements'
+import ImagePicker from 'react-native-image-crop-picker';
 
 import { colors } from '@constants/theme';
 import images from '@constants/images';
@@ -31,12 +32,14 @@ export default class Register extends React.Component {
             mobile: '',
             password: '',
             confirm: '',
+            image: null,
 
             nameValid: true,
             emailValid: true,
             mobileValid: true,
             passwordValid: true,
             confirmValid: true,
+            imageValid: true,
         }
     }
 
@@ -90,6 +93,32 @@ export default class Register extends React.Component {
         return confirmValid
     }
 
+    // image upload validation
+    validateImage() {
+        const { image } = this.state;
+        const imageValid = (image != null);
+        LayoutAnimation.easeInEaseOut()
+        this.setState({ imageValid });
+        imageValid;
+        return imageValid
+    }
+
+    //imagepicker for license upload
+    CapturePhoto = async () => {
+        let result = await ImagePicker.openPicker({
+            width: 300,
+            height: 400,
+            cropping: true
+        })
+        // console.log(JSON.stringify(result));
+        this.setState({ image: result });        
+    }
+
+    //upload cancel
+    cancelPhoto = () => {
+        this.setState({ image: null });
+    }
+
     //register button press for validation
     onRegister() {
         const { onRegister } = this.props;
@@ -99,10 +128,11 @@ export default class Register extends React.Component {
         const mobileValid = this.validateMobile();
         const passwordValid = this.validatePassword();
         const confirmValid = this.validateConfirm();
+        const imageValid = this.validateImage()
 
-        if (nameValid && emailValid && mobileValid && passwordValid && confirmValid) {
+        if (nameValid && emailValid && mobileValid && passwordValid && confirmValid && imageValid) {
             this.setState({ mobile: "+" + this.state.mobile });
-            onRegister(this.state.name, this.state.email, this.state.mobile, this.state.password);
+            onRegister(this.state.name, this.state.email, this.state.mobile, this.state.password, this.state.image);
         }
     }
 
@@ -261,6 +291,44 @@ export default class Register extends React.Component {
                                         errorStyle={styles.errorMessageStyle}
                                     />
                                 </View>
+                                {
+                                    this.state.image ?
+                                        <View style={styles.imagePosition}>
+                                            <TouchableOpacity style={styles.photoClick} onPress={this.cancelPhoto}>
+                                                <Image source={require('@assets/images/cross.png')} resizeMode={'contain'} style={styles.imageStyle} />
+                                            </TouchableOpacity>
+                                            <Image source={{ uri: this.state.image.path }} style={styles.photoResult} resizeMode={'cover'} />
+                                        </View>
+                                        :
+                                        <View style={styles.capturePhoto}>
+                                            <View>
+                                                {
+                                                    this.state.imageValid ?
+                                                        <Text style={styles.capturePhotoTitle}>{language.upload_driving_lisence}</Text>
+                                                        :
+                                                        <Text style={styles.errorPhotoTitle}>{language.upload_driving_lisence}</Text>
+                                                }
+
+                                            </View>
+                                            <View style={styles.capturePicClick}>
+                                                <TouchableOpacity style={styles.flexView1} onPress={this.CapturePhoto}>
+                                                    <View>
+                                                        <View style={styles.imageFixStyle}>
+                                                            <Image source={require('@assets/images/camera.png')} resizeMode={'contain'} style={styles.imageStyle2} />
+                                                        </View>
+                                                    </View>
+                                                </TouchableOpacity>
+                                                <View style={styles.myView}>
+                                                    <View style={styles.myView1} />
+                                                </View>
+                                                <View style={styles.myView2}>
+                                                    <View style={styles.myView3}>
+                                                        <Text style={styles.textStyle}>{language.image_size_warning}</Text>
+                                                    </View>
+                                                </View>
+                                            </View>
+                                        </View>
+                                }
                                 <TouchableOpacity onPress={() => this.onRegister()} style={[styles.button, { width: wp('85.0%') }]}>
                                     <Text style={{ fontSize: 15, fontWeight: 'bold' }}>SIGNUP</Text>
                                 </TouchableOpacity>
@@ -354,5 +422,99 @@ const styles = StyleSheet.create({
         fontSize: 12,
         fontWeight: 'bold',
         marginLeft: 0
+    },
+    capturePhoto: {
+        width: '80%',
+        alignSelf: 'center',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        borderRadius: 10,
+        backgroundColor: colors.WHITE,
+        marginLeft: 20,
+        marginRight: 20,
+        paddingTop: 15,
+        paddingBottom: 10,
+        marginTop: 15
+    },
+    capturePhotoTitle: {
+        color: colors.BLACK,
+        fontSize: 14,
+        textAlign: 'center',
+        paddingBottom: 15,
+
+    },
+    errorPhotoTitle: {
+        color: colors.RED.default,
+        fontSize: 13,
+        textAlign: 'center',
+        paddingBottom: 15,
+    },
+    photoResult: {
+        alignSelf: 'center',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        borderRadius: 10,
+        marginLeft: 20,
+        marginRight: 20,
+        paddingTop: 15,
+        paddingBottom: 10,
+        marginTop: 15,
+        width: '80%',
+        height: hp('100.0%') / 4
+    },
+    imagePosition: {
+        position: 'relative'
+    },
+    photoClick: {
+        paddingRight: 48,
+        position: 'absolute',
+        zIndex: 1,
+        marginTop: 18,
+        alignSelf: 'flex-end'
+    },
+    capturePicClick: {
+        backgroundColor: colors.WHITE,
+        flexDirection: 'row',
+        position: 'relative',
+        zIndex: 1
+    },
+    imageStyle: {
+        width: 30,
+        height: hp('100.0%') / 15
+    },
+    flexView1: {
+        flex: 12
+    },
+    imageFixStyle: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    imageStyle2: {
+        width: 150,
+        height: hp('100.0%') / 15
+    },
+    myView: {
+        flex: 2,
+        height: 50,
+        width: 1,
+        alignItems: 'center'
+    },
+    myView1: {
+        height: hp('100.0%') / 18,
+        width: 1.5,
+        backgroundColor: colors.GREY.btnSecondary,
+        alignItems: 'center',
+        marginTop: 10
+    },
+    myView2: {
+        flex: 20,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    myView3: {
+        flex: 2.2,
+        alignItems: 'center',
+        justifyContent: 'center'
     },
 });
