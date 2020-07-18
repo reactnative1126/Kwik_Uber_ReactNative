@@ -1,0 +1,599 @@
+<!doctype html>
+<html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+	<title>GrabCab Admin Documentation</title>
+	<link rel="stylesheet" href="assets/css/styles.css" type="text/css" />
+
+	<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0" />
+
+
+</head>
+
+<body>
+
+	<section id="body" class="width">
+
+		<aside id="sidebar" class="column-left">
+
+			<header>
+				<h1><a style="font-size: 22px" href="#">GrabCab Admin</a></h1>
+				<h2>Documentation by <b>Exicube App Solutions.</b> v5.0 </h2>
+			</header>
+
+			<nav id="mainnav">
+				<ul>
+					<li class="item selected-item"><a href="#topMain">Introduction</a></li>
+					<li class="item"><a href="#DWT">Environment Setup</a></li>
+					<li class="item"><a href="#GS">Admin Getting Started</a></li>
+					<li class="item"><a href="#PS">Admin Portal Setup</a></li>
+					<li class="item"><a href="#DB">Admin User Creation</a></li>
+					<li class="item"><a href="#HAP">Hosting Admin Portal</a></li>
+					<li class="item"><a href="#PR">Pricing Model</a></li>
+					<li class="item"><a href="#AGS">Apps Getting Started</a></li>
+					<li class="item"><a href="#APS">Apps Project Setup</a></li>
+					<li class="item"><a href="#RA">Run Your Apps</a></li>
+					<li class="item"><a href="#bs">Build Native Apps</a></li>
+					<li class="item"><a href="#ADA">Approve Driver Account</a></li>
+					<li class="item"><a href="#TC">Customizations</a></li>
+					<li class="item"><a href="#HS">Help And Support</a></li>
+				</ul>
+			</nav>
+		</aside>
+		<section id="content">
+			<article id="topMain">
+				<h2>1. Introduction to GrabCab</h2>
+				<br>
+				<p>This project consists of 2 Mobile Apps (Rider and Driver) and 1 Admin Portal.
+					<p class="secondPara">Technologies Used in Admin Portal and Backend are:</p>
+					<ol class="expanded">
+						<li>React.Js</li>
+						<li>Redux</li>
+						<li>Material UI</li>
+						<li>Firebase Realtime Database</li>
+					</ol>
+
+					<p> We have built the two Apps using React Native(Expo) for iOS and Android</p>
+					<p class="secondPara">The main Technologies used are</p>
+					<ol class="expanded">
+						<li>React Native</li>
+						<li>Expo</li>
+						<li>React Native Elements</li>
+					</ol>
+			</article>
+			<article id="DWT">
+				<h2>2. Environment Setup</h2>
+				<p class="secondPara" style="margin-bottom:0px">To run the 3 Apps you need 3 things in your devlopment
+					machine as mentioned below.</p>
+				<p class="remine">If your Machine environment is already setup for running an Expo app then you can skip
+					these steps</p>
+				<ol class="expanded" type="A">
+					<li>Download NodeJS</li>
+					<li>Install Git (Windows Machine users mainly need this. Mac comes preinstalled.)</li>
+					<li>Install Expo</li>
+				</ol>
+
+				<p class="secondPara heading">A. Download NodeJs</p>
+				<img height="100%" width="25%" src="assets/images/nodejs_logo.png" alt="HTML Structure" />
+
+				<ol class="styledlist listCustom" type="I">
+					<li>
+						<ul> Download instructions
+							<li>Mac users: For OS X, download the .pkg file form below link.<b>(v.10.16.0
+									recommended)</b></li>
+							<li>Windows users: Download either the MSI or the .exe form below link, whichever you prefer
+								.<b>(v.10.16.0 recommended)</b></li>
+						</ul>
+						<a href="https://nodejs.org/dist/v10.16.0/" class="button" target="_blank">Download Node
+							v.10.16.0 from here</a>
+					</li>
+
+					<li>After Installing NodeJs you'll most likely need to restart your computer.</li>
+					<p style="color:#757575;font-size:18px;">To ensure that npm is configured correctly, you can type:
+					</p>
+					<code class="codeBlockBg">
+									npm --version
+							</code>
+					</li>
+				</ol>
+				<p class="secondPara heading" id="Configure">B. Install Git</p>
+				<ol class="styledlist listCustom" type="I">
+					<li>
+						<ul> Download and install the latest from this link.
+							<li>https://git-scm.com/</b></li>
+						</ul>
+					</li>
+				</ol>
+
+				<p class="secondPara heading" id="Configure">C. Install Expo</p>
+				<img height="100%" width="30%" src="assets/images/expo_logo.png" alt="HTML Structure" />
+				<h4>I. In your command prompt, type: </h4>
+				<code class="codeBlockBg">
+					 npm install -g expo-cli
+					</code>
+			</article>
+			<article id="GS">
+				<h2>3. Admin Getting Started </h2>
+
+				<ol class="styledlist listCustom" type="A">
+					<li>First Extract the project as shown in picture.</li><br>
+					<img height="100%" width="50%" src="assets/images/admin_pics/unzip_admin.png"
+						alt="HTML Structure" /></br><br>
+					<li>Open the Terminal, Then go to the project folder 'GrabCab_Code </li>
+				</ol>
+				<code class="codeBlockBg">
+							   cd GrabcabAdmin_code
+							</code>
+
+				<li>Then run below commands</li>
+				<code class="codeBlockBg">
+								  npm install
+								</code>
+				<code class="codeBlockBg">
+									cd functions
+								  </code>
+				<code class="codeBlockBg">
+									npm install
+								  </code>
+				<code class="codeBlockBg">
+									cd ..
+								  </code>
+				</li>
+			</article>
+
+			<article id="PS">
+				<h2>4. Admin Portal Setup</h2><br>
+				<strong>* After successfully installing the npm packages, Open your project in your Code
+					Editor</strong><br><br>
+				<p><b><u> Step 1</u></b> First go to <a href="https://console.firebase.google.com/u/0/">Firebase
+						Console</a> and then create a new project as shown in picture.</p><br>
+				<img height="500%" width="40%" src="assets/images/app/new_pics/newProject
+				.png" alt="HTML Structure" /><br><br>
+
+				<p><b><u> Step 2</u></b> Type in your project name as shown in picture.</p><br>
+				<img height="500%" width="40%" src="assets/images/app/new_pics/newProjectName
+				.png" alt="HTML Structure" /><br><br>
+
+				<p><b><u> Step 3</u></b> Now Accept terms and click on 'Create Project' as shown in picture.</p><br>
+				<img height="500%" width="40%" src="assets/images/app/new_pics/newProjTermAccept
+				.png" alt="HTML Structure" /><br><br>
+
+				<p><b><u> Step 4</u></b> When your project is ready click the 'Continue' button as shown in picture.</p>
+				<img height="500%" width="40%" src="assets/images/app/new_pics/newProjContinue
+				.png" alt="HTML Structure" /><br><br>
+
+				<p><b><u> Step 5</u></b> Now you have to enable a new web app and to do that click the red circled
+					button as shown in picture.</p><br>
+				<img height="500%" width="40%" src="assets/images/app/new_pics/newWebApp
+				.png" alt="HTML Structure" /><br><br>
+
+				<p><b><u> Step 6</u></b> Type in your project name and click on 'Register app' button as shown in
+					picture.</p><br>
+				<img height="500%" width="40%" src="assets/images/app/new_pics/newWebAppName
+				.png" alt="HTML Structure" /><br><br>
+
+				<p><b><u> Step 7</u></b> Now you have to copy the red Squre code and then go to your admin project's
+					config/dev.js and config/prod.js file and paste it. after that click the 'Continue to console'
+					button as shown in picture.</p>
+				<img height="500%" width="40%" src="assets/images/app/new_pics/configCopy
+				.png" alt="HTML Structure" /><br><br>
+
+				<img height="500%" width="40%" src="assets/images/AppConfig
+					.png" alt="HTML Structure" /><br><br>
+
+				<p><b><u> Step 8</u></b> Now click on the 'Database' menu as shown in picture.</p><br>
+				<img height="500%" width="40%" src="assets/images/app/new_pics/DatabaseSelect
+				.png" alt="HTML Structure" /><br><br>
+
+				<p><b><u> Step 9</u></b> Now Scroll to 'choose Realtime Database' and click on the 'Create database'
+					button as shown in picture.</p><br>
+				<img height="500%" width="40%" src="assets/images/app/new_pics/RealtimeDB
+				.png" alt="HTML Structure" /><br><br>
+
+				<p><b><u> Step 10</u></b> Now click on 'Start in Locked mode' and then click 'Enable' button to enable
+					it as shown in picture.</p><br>
+				<img height="500%" width="40%" src="assets/images/app/db-mode
+				.png" alt="HTML Structure" /><br><br>
+
+				<p><b><u> Step 11</u></b> Now Click on the vertical three dots menu icon and then click on 'import JSON'
+					button as shown in picture.</p><br>
+				<img height="500%" width="30%" src="assets/images/app/new_pics/selectImport
+				.png" alt="HTML Structure" /><br><br>
+				<img height="500%" width="40%" src="assets/images/app/new_pics/importJson
+				.png" alt="HTML Structure" /><br><br>
+
+				<p><b><u> Step 12</u></b> And then browse to the 'grabcab-app-export.json' file and click on 'Open'
+					button as shown in picture.</p><br>
+				<img height="500%" width="40%" src="assets/images/app/new_pics/browseJson
+				.png" alt="HTML Structure" /><br>
+				<img height="500%" width="40%" src="assets/images/app/new_pics/browseOpen
+				.png" alt="HTML Structure" /><br><br>
+
+				<p><b><u> Step 13</u></b> And the final step is to click on the 'Import' button as shown in picture.</p>
+				<br>
+				<img height="500%" width="40%" src="assets/images/app/new_pics/importClick
+				.png" alt="HTML Structure" /><br><br />
+
+				<p><b><u> Step 14</u></b> Click on Rules tab and paste the below rule and then click on PUBLISH button as
+					shown in picture.</p><br>
+				<img height="500%" width="40%" src="assets/images/app/db-rule
+				.png" alt="HTML Structure" /><br><br />
+				<code class="codeBlockBg">
+					{ 
+						"rules":{ 
+						  "users": { ".read": "auth != null", ".write": "auth != null" }, 
+						  "About_Us": { ".read": "auth != null", ".write": "auth != null" }, 
+						  "bookings": { ".read": "auth != null", ".write": "auth != null" }, 
+						  "cancel_reason": { ".read": "auth != null", ".write": "auth != null" }, 
+						  "notifications": { ".read": "auth != null", ".write": "auth != null" }, 
+						  "offers": { ".read": "auth != null", ".write": "auth != null" }, 
+						  "rates": { ".read": "auth != null", ".write": "auth != null" }, 
+						  "referral": { ".read": "auth != null", ".write": "auth != null" }, 
+						  "settings": { ".read": "auth != null", ".write": "auth != null" } 
+						  } 
+					  }
+				  </code>
+
+				<p><b><u> Step 15</u></b> Click on Storage and paste the bellow rule and click on PUBLISH button as
+					shown in picture.</p><br>
+				<img height="500%" width="40%" src="assets/images/app/s-rule1
+				.png" alt="HTML Structure" /><br><br />
+				<img height="500%" width="40%" src="assets/images/app/s-rule2
+				.png" alt="HTML Structure" /><br><br />
+				<img height="500%" width="40%" src="assets/images/app/s-rule3
+				.png" alt="HTML Structure" /><br><br />
+				<img height="500%" width="40%" src="assets/images/app/s-rule4
+				.png" alt="HTML Structure" /><br><br />
+				<code class="codeBlockBg">
+					service firebase.storage {
+						match /b/{bucket}/o {
+						  match /{allPaths=**} {
+							allow read, write;
+						  }
+						}
+					  }
+					</code>
+				<p><b><u> Step 16</u></b> Click on Authetication Menu and click on Sign-in Method and hover on Email/
+					Password pencil icon and follow the instruction as show in pictures </p><br>
+				<img height="500%" width="40%" src="assets/images/app/auth-0
+					.png" alt="HTML Structure" /><br><br />
+				<img height="500%" width="40%" src="assets/images/app/auth-1
+					.png" alt="HTML Structure" /><br><br />
+				<img height="500%" width="40%" src="assets/images/app/auth-2
+					.png" alt="HTML Structure" /><br><br />
+				<img height="500%" width="40%" src="assets/images/app/auth-3
+					.png" alt="HTML Structure" /><br><br />
+				<br><br />
+
+				<p><b><u> Step 17 </u></b>Similarly enable the Phone Auth as shown below</p><br>
+
+				<img width="60%" src="assets/images/enable-auth.png" alt="Enable Mobile" /><br><br>
+
+
+
+				<p><b><u> Step 18 </u></b>Change the Google map key in scr/views/Dashboard.js. Replace XXXXXXXXXXXXXX
+					only</p><br>
+
+				<img width="60%" src="assets/images/mapkey.png" alt="Map Key Demo" /><br><br>
+
+				<p>Now you are ready to go with Map and other tracking functionality.(to get the API key check the
+					'Google Map API Key How To.pdf')</p><br><br>
+
+				<p><b><u> Step 19</u></b>Change the Stripe and Braintree keys reequired for payment getway in
+					functions/index.js. shown in below pictures</p><br>
+
+				<img width="60%" src="assets/images/strip-settings.png" alt="Map Key Demo" /><br><br>
+				<img width="60%" src="assets/images/braintree-settings.png" alt="Map Key Demo" /><br><br>
+				<p style="color:red">Payment Gateways network calls will need Firebase Paid plan. Go for Blaze "Pay as
+					you Go" plan for the Firebase Project.</p>
+				<p><b><u> Step 20</u></b>To run the admin portal in localhost</p><br>
+				<code class="codeBlockBg">
+					npm start
+					</code>
+
+				</ol>
+
+			</article>
+			<article id="DB">
+				<h2>5. Admin User Creation </h2>
+				<p>Here we show just how to manually create a admin user in firebase. If you want to know how to create
+					a firebase project please open grabcab app documentation and follow firebase setup</p>
+				<p><b><u> Step 1</u></b> 'Users' tab click on 'Add user' button and then type in your desired admin
+					email and password and then click on 'Add user' button below as shown in picture.</p><br>
+				<img height="500%" width="40%" src="assets/images/admin_pics/addUser
+				.png" alt="HTML Structure" /><br><br>
+
+				<p><b><u> Step 2</u></b> Now mouse hover on your admin user and click on 'copy UID' and then go to
+					'Database' section as shown in picture.</p><br>
+				<img height="500%" width="40%" src="assets/images/admin_pics/copyUid
+				.png" alt="HTML Structure" /><br><br>
+
+				<p><b><u> Step 3</u></b> Now click on the '+' button in the root and type in 'users' in key section and
+					then again press the '+' icon of users branch and paste copied UID in key section and then again
+					click on '+' icon of UID branch and type in 'usertype' in key section and 'Admin' in value section
+					and then press enter or press 'Add' button as shown in picture. Also add 'isAdmin:true' in similar
+					way.</p><br>
+				<img height="500%" width="40%" src="assets/images/isAdmin.jpg" alt="HTML Structure" /><br><br />
+
+				<p><b>Now You can login in your admin portal using your email and password.</b></p><br><br>
+
+				<hr />
+			</article>
+			<article id="HAP">
+				<h2>6. Hosting Admin Portal in Firebase </h2>
+				<p>go to firebase project setting and copy the app id and then open .firebaserc file on your project
+					root folder and replace the default name. picture as show below</p>
+				<img height="500%" width="40%" src="assets/images/fs1.png" alt="HTML Structure" /><br><br />
+				<img height="500%" width="40%" src="assets/images/firehost2.png" alt="HTML Structure" /><br><br />
+				<img height="500%" width="40%" src="assets/images/firehost3.png" alt="HTML Structure" /><br><br />
+
+				then go to your project root folder from command prompt and then run the below commands
+				<code class="codeBlockBg">
+					npm run build
+				</code>
+				<code class="codeBlockBg">
+					npm install firebase-tools -g
+				</code>
+				<code class="codeBlockBg">
+					firebase login
+				</code>
+				<code class="codeBlockBg">
+					firebase deploy
+				</code>
+				after successfully deploying your project you will received the hosting url in the terminal
+				<img height="500%" width="60%" src="assets/images/hu.png" alt="HTML Structure" /><br><br />
+			</article>
+			<article id="PR">
+				<h2>7. Pricing Model Explained</h2>
+				<p>Price is simple.</p>
+				<ol class="expanded">
+					<li>There is an Hourly rate e.g. 6$ for 1 hour. means 0.1 $ per minute.</li>
+					<li>Then there is km rate. e.g. 2$ per km.</li>
+
+					<li>
+						After that, there is a Taxi Company Service Fee in percentage i.e. convenience fee e.g. 5%
+						and there is also a minimum fare to be paid even if going till next corner. e.g 15$ minimum<br>
+						And finally, there is a discount of promo % or flat number<br>
+						Let's assume a person travelled 30 mins and a distance of 5 km<br>
+						So the Calculation is.
+					</li>
+				</ol>
+
+				<code class="codeBlockBg">
+						Fare = ( hourly Rate * time ) + ( Km rate * kms ) 
+							 = ( 30 * 0.1 ) + ( 2 * 5 )
+							 = 3 + 10 = 13$
+					</code>
+
+				<p>Now, Minimum Fare is 15$. 13$ is less, so the customer will be billed for 15$<br>
+					Now comes a 5% convenience fee on top of that, which is
+				</p>
+				<code class="codeBlockBg">
+					15$ + 5% of 15$ = 15.75$
+				</code>
+
+				<p>
+					Finally, the person got a promo discount of 10% discount means <br> <br>
+					<code class="codeBlockBg">
+				 15.75$ - (10% of 15.75) = 14.175$ = 14.18$ round is the final payment
+				</code>
+					He can pay partial from Wallet and rest by Card or fully from Wallet / Card
+
+					There is a difference between the estimate and actual is because you are not travelling men actual
+					while testing. The hourly fee should be very less and km fee should be the main fee. Then things
+					will seem logical.</p>
+			</article>
+			<article id="AGS">
+				<h2>8. Apps Getting Started</h2>
+
+				<ol class="styledlist listCustom" type="A">
+					<li>First Extract the projects as shown in picture.</li>
+					<img height="100%" width="50%" src="assets/images/unzip_folder.png" alt="HTML Structure" />
+					<li>If you want to open Driver Project, Open the Terminal, Then go to the project folder
+						'GrabCab_Code' </li>
+					<P>For Rider App</P>
+
+					<code class="codeBlockBg">
+							   cd GrabCabRider_code
+							</code>
+
+					<P>For Driver App</P>
+
+					<code class="codeBlockBg">
+							   cd GrabCabDriver_code
+							</code>
+
+					<li>Then run below command</li>
+					<code class="codeBlockBg">
+								  npm install
+								</code>
+					</li>
+
+				</ol>
+			</article>
+
+			<article id="APS">
+				<h2>9. Apps Project Setup</h2><br>
+
+				<p><b><u> Step 1</u></b> First go to <a href="https://console.firebase.google.com/u/0/">Firebase
+						Console</a>, click on project setting and Now you have to copy the red Square code and paste in
+					your App.js file of both Rider and driver project folder as shown in picture.</p><br>
+				<img height="500%" width="40%" src="assets/images//fs1.png" alt="HTML Structure" /><br>
+
+				<img height="500%" width="40%" src="assets/images/fs2.png" alt="HTML Structure" /><br>
+
+				<p>Your App.js file will be look like the picture.</p><br>
+				<img height="500%" width="40%" src="assets/images/new_pics/appConfig.png"
+					alt="HTML Structure" /><br><br>
+
+
+
+				<p><b><u> Step 2</u></b> go to firebase console and Click on Authetication Menu, click on sign-in-method
+					and hover on Facebook pencil icon and enter Facebook ID and App Secret in Firebase Authentication ->
+					Facebook Section and follow the instruction as show in pictures</p><br>
+
+				<img height="500%" width="40%" src="assets/images/fbb.png" alt="FB" /><br><br />
+				<img height="500%" width="40%" src="assets/images/fb-auth.png" alt="FB" /><br><br />
+				<img height="500%" width="40%" src="assets/images/FBFirebase.png" alt="FB" /><br><br />
+
+				<p>Now you are ready with Facebook. For more details on configuring Facebook and get facebook app secret
+					and app key please check this link
+					<a href="https://docs.expo.io/versions/latest/sdk/facebook/">Click Here</a></a></p><br>
+
+
+
+				<p><b><u> Step 3</u></b> Now Go to your Code Editor and Change Facebook Details in app.json file of
+					Rider App</p><br>
+				<img height="500%" width="40%" src="assets/images/FBAppjson.png" alt="FB" /><br><br />
+
+				<p><b><u> Step 4</u></b> Change Facebook App ID with you own src/screens/LoginScreen.js in Rider App</p>
+				<br>
+				<img height="500%" width="40%" src="assets/images/LoginFB.png" alt="FB" /><br><br />
+				<p><b><u> Step 5</u></b> Change on app.json in both app Rider and Driver</p><br>
+				<img height="500%" width="40%" src="assets/images/des1.png" alt="FB" /><br><br />
+				<img height="500%" width="40%" src="assets/images/des2.png" alt="FB" /><br><br />
+				<img height="500%" width="40%" src="assets/images/des3.png" alt="FB" /><br><br />
+
+
+				<p><b><u> Step 6</u></b> Change the Google Map API Key on Both APP</p><br>
+
+				Rider App & Driver App both
+				<ul>
+					<li>app.json - Line 43 & 59</li>
+					<li>src/common/key.js</li>
+				</ul>
+				<p>Now you are ready to go with Map and other tracking functionality.(Get a API Key check word document
+					from documentation folder)</p><br>
+				<p><b><u> Step 7</u></b> Change the Payment gateway server url on Rider APP</p>
+				go to firebase functions, then click on Dashboard and copy url (e.g.
+				"https://us-central1-grabcab.cloudfunctions.net/"). picture shown as below<br><br>
+				<img height="500%" width="40%" src="assets/images/serverurl-1.png" alt="FB" /><br><br />
+				<img height="500%" width="80%" src="assets/images/serverurl-2.png" alt="FB" /><br><br />
+				<ul>
+					<li> paste it on src/common/serverUrl.js of your rider app</li>
+				</ul>
+				<img height="500%" width="40%" src="assets/images/server_url.png" alt="server_url" /><br><br />
+
+
+				<br>
+
+				<p> <strong>Finally Your App setup is Successfully complete.</strong></p><br>
+
+
+				<article id="RA">
+					<h2>10. Run App on Local development environment</h2><br>
+
+					<p>Run below command</p>
+					<code class="codeBlockBg">
+								  expo start
+								</code>
+					</li>
+					<h4>Run on iOS Simulator</h4><br>
+					<img height="500%" width="40%" src="assets/images/android_simulator.png" alt="HTML Structure" /><br>
+					<hr><br>
+					<!-- <h4>Run on IOS emulator</h4><br>
+				<img height="50%" width="40%" src="assets/images/ios_simulator.png" alt="HTML Structure" /><br><hr><br>-->
+					<h4>Run on your Android Device</h4><br>
+					<img height="50%" width="40%" src="assets/images/device.png" alt="HTML Structure" />
+					<p>Note: Expo App can be downloaded from App stores.</p>
+				</article>
+				<br></br>
+				<article id="bs">
+					<h2>11. Build Native apps</h2>
+
+					<ol class="styledlist listCustom">
+						<li>For login expo account</li>
+						<code class="codeBlockBg">
+							expo login
+						  </code>
+						<li>For build Android </li>
+
+						<code class="codeBlockBg">
+						   expo build:android
+						</code>
+
+						<li>For build IOS</li>
+
+						<code class="codeBlockBg">
+							expo build:ios
+						</code>
+					</ol>
+
+					<p>For more information go to below links</p>
+					<ol>
+
+						<li>
+							<a href='https://docs.expo.io/versions/latest/distribution/building-standalone-apps'>Building
+								standalone apps</a>
+						</li>
+
+						<li>
+							<a href="https://docs.expo.io/versions/latest/distribution/app-stores">App stores</a>
+						</li>
+						<li>
+							<a href="https://docs.expo.io/versions/latest/distribution/uploading-apps">Uploading
+								apps</a>
+						</li>
+					</ol>
+				</article>
+				<br></br>
+				<article id="ADA">
+					<h2>12. Approve New Driver Account </h2><br>
+					<h4>Please follow the screenshot</h4><br>
+					<img height="500%" width="80%" src="assets/images/driver-acapprove.png" alt="HTML Structure" /><br>
+					<hr><br>
+				</article>
+				<article id="TC">
+					<h2>13. Customizations</h2><br/>
+					<p><strong>Theme Color - </strong>You can Change the total Theme Color, Fonts and Font size of the Mobile Apps in the src/common/theme.js</p>
+					<img  width="50%" src="assets/images/theme.png" alt="HTML Structure" /><br>
+					<br>
+					<p><strong>Language Change - </strong>You can change laguage in /src/common/langauge.js file. All the apps has one same file.</p>
+					<img width="50%" src="assets/images/language.png" alt="HTML Structure" /><br>
+					<br>
+					<p><strong>App "About Us" Change - </strong>You can change laguage in database.</p>
+					<img  width="50%" src="assets/images/about_us_configure.png" alt="HTML Structure" /><br>
+					<br>
+					<p><strong>Terms & Conditions Link Change - </strong>You can change laguage in /src/screens/LoginScreen.js file. Line 166.</p>
+					<img  width="50%" src="assets/images/termshtml.png" alt="HTML Structure" /><br>
+					<br>
+				</article>
+
+				<article id="HS">
+					<h2>14. Help And Support </h2>
+					<p>Thank you for purchasing our theme. If you have any questions that are beyond the scope of
+						this help file, please feel free to email via my user page contact form </p>
+					<a class='blink_me button' href="https://codecanyon.net/user/exicube" target="_blank">contact
+						us</a>
+				</article>
+
+				<a href="#topMain" class="arrowTop">
+					<img src="assets/images/top.png" alt="gototop" />
+				</a>
+
+				<footer class="clear">
+					<hr>
+					<p>&copy; 2019 Exicube App Solutions (OPC) Private Limited. &nbsp;| Developed by <a
+							href="http://exicube.com/">Exicube </a></p>
+				</footer>
+
+		</section>
+		<div class="clear"></div>
+	</section>
+
+
+	<script>
+		var header = document.getElementById("mainnav");
+		var btns = header.getElementsByClassName("item");
+		for (var i = 0; i < btns.length; i++) {
+			btns[i].addEventListener("click", function () {
+				var current = document.getElementsByClassName("selected-item");
+				current[0].className = current[0].className.replace(" selected-item", "");
+				this.className += " selected-item";
+			});
+		}
+	</script>
+</body>
+
+</html>
