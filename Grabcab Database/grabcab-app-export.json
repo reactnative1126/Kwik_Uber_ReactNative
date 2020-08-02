@@ -1,0 +1,77 @@
+{
+  "About_Us" : {
+    "contents" : "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting.\\\"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting.",
+    "email" : "support@email.com",
+    "heading" : "Who We Are",
+    "phone" : "+91 9635xxxxxx"
+  },
+  "cancel_reason" : [ {
+    "label" : "Unable to Contact Driver",
+    "value" : 0
+  }, {
+    "label" : "Cab is not moving in my direction",
+    "value" : 1
+  }, {
+    "label" : "My reason is not listed",
+    "value" : 2
+  }, {
+    "label" : "Driver Denied duty",
+    "value" : 3
+  }, {
+    "label" : "Cab is taking long time",
+    "value" : 4
+  } ],
+  "offers" : {
+    "offer1" : {
+      "max_promo_discount_value" : 10,
+      "min_order" : 10,
+      "promo_description" : "Free $10 for everybody",
+      "promo_discount_type" : "flat",
+      "promo_discount_value" : 10,
+      "promo_name" : "First ride bonus",
+      "promo_start" : "20/11/2019",
+      "promo_usage_limit" : 1000,
+      "promo_validity" : "01/01/2021"
+    }
+  },
+  "rates" : {
+    "car_type" : [ {
+      "convenience_fees" : 20,
+      "image" : "https://dev.exicube.com/images/car0.png",
+      "min_fare" : 15,
+      "name" : "Economy",
+      "rate_per_hour" : 9,
+      "rate_per_kilometer" : 9
+    }, {
+      "convenience_fees" : 15,
+      "image" : "https://dev.exicube.com/images/car1.png",
+      "min_fare" : 10,
+      "name" : "ShareTaxi",
+      "rate_per_hour" : 20,
+      "rate_per_kilometer" : 20
+    }, {
+      "convenience_fees" : 20,
+      "image" : "https://dev.exicube.com/images/car2.png",
+      "min_fare" : 25,
+      "name" : "Exclusive",
+      "rate_per_hour" : 200,
+      "rate_per_kilometer" : 200
+    } ]
+  },
+  "referral" : {
+    "bonus" : {
+      "amount" : 1,
+      "id" : "bonus",
+      "key" : "bonus",
+      "updatedAt" : 1564495712585
+    }
+  },
+  "settings" : {
+    "braintree" : true,
+    "cash" : true,
+    "code" : "USD",
+    "stripe" : true,
+    "symbol" : "$",
+    "wallet" : true
+  }
+}

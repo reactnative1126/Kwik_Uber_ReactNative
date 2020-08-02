@@ -1,4 +1,0 @@
-export default {
-    SET_BOOKING: 'SET_BOOKING',
-    SET_NOTIFICATION: 'SET_NOTIFICATION'
-}
