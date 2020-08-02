@@ -1,143 +1,101 @@
 import React, { Component } from "react";
 import {
-    StatusBar,
     StyleSheet,
     SafeAreaView,
     ImageBackground,
-    TouchableOpacity,
     View,
     Image,
     Text,
-    Alert,
+    Modal,
+    TouchableOpacity,
+    StatusBar,
     AsyncStorage
 } from "react-native";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Icon, Input } from 'react-native-elements';
-import Toast, { DURATION } from 'react-native-easy-toast';
-import { LoginManager, AccessToken } from 'react-native-fbsdk';
-import Geolocation from '@react-native-community/geolocation';
-import Geocoder from 'react-native-geocoding';
+// import firebase from "react-native-firebase";
+import * as Facebook from 'expo-facebook';
 
-import * as firebase from 'firebase';
 import { connect } from 'react-redux';
 import { setUser } from '@modules/account/actions';
-import { Loading } from '@components';
+
+import { Header } from '@components';
+import MaterialButtonYellow from "@components/MaterialButtonYellow";
 import { verifyEmail, verifyLength } from '@constants/functions';
-import { theme, colors } from '@constants/theme';
+import { colors } from '@constants/theme';
 import images from '@constants/images';
-import configs from '@constants/configs';
 import language from '@constants/language';
-import API, { setClientToken } from '@services/API';
+import API from '@services/API';
 
 class Login extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            loadingModal: false,
             email: null,
             password: null,
             emailMsg: null,
             passwordMsg: null,
-            loading: false,
         }
     }
+
+    // async componentDidMount() {
+    //     //we check if user has granted permission to receive push notifications.
+    //     this.checkPermission();
+    //     // Register all listener for notification 
+    //     // this.createNotificationListeners();
+    // }
+
+    // async checkPermission() {
+    //     const enabled = await firebase.messaging().hasPermission();
+    //     // If Premission granted proceed towards token fetch
+    //     if (enabled) {
+    //         this.getToken();
+    //     } else {
+    //         // If permission hasn’t been granted to our app, request user in requestPermission method. 
+    //         this.requestPermission();
+    //     }
+    // }
+
+    // async getToken() {
+    //     let fcmToken = await AsyncStorage.getItem('fcmToken');
+    //     if (!fcmToken) {
+    //         fcmToken = await firebase.messaging().getToken();
+    //         if (fcmToken) {
+    //             // user has a device token
+    //             await AsyncStorage.setItem('fcmToken', fcmToken);
+    //         }
+    //     }
+    // }
+
+    // async requestPermission() {
+    //     try {
+    //         await firebase.messaging().requestPermission();
+    //         // User has authorised
+    //         this.getToken();
+    //     } catch (error) {
+    //         // User has rejected permissions
+    //         console.log('permission rejected');
+    //     }
+    // }
 
     async FbLogin() {
         try {
-            const result = await LoginManager.logInWithPermissions(['public_profile', 'email']);
-            if (result.isCancelled) {
-                throw 'User cancelled the login process';
-            }
-            const data = await AccessToken.getCurrentAccessToken();
-            if (!data) {
-                throw 'Something went wrong obtaining access token';
-            } else {
-                this.setState({ loading: true });
-                const credential = firebase.auth.FacebookAuthProvider.credential(data.accessToken);
-                firebase.auth().signInWithCredential(credential)
-                    .then((resp) => {
-                        if (resp && resp.additionalUserInfo.isNewUser == true) {
-                            Geolocation.getCurrentPosition((position) => {
-                                Geocoder.init(configs.google_map_key);
-                                Geocoder.from({
-                                    latitude: position.coords.latitude,
-                                    longitude: position.coords.longitude
-                                }).then(json => {
-                                    API.post('/user_register', {
-                                        user_type: 'D',
-                                        user_name: resp.user.displayName,
-                                        user_uid: resp.user.uid,
-                                        email: resp.user.email,
-                                        mobno: resp.user.phoneNumber == null ? '123456789' : resp.user.phoneNumber,
-                                        password: '123456',
-                                        licence_image: '',
-                                        gender: 1,
-                                        address: json.results[0].formatted_address,
-                                        mode: Platform.OS,
-                                        fcm_id: this.props.device_token,
-                                        device_token: this.props.device_token
-                                    }).then((resp) => {
-                                        if (resp.data.success == 1) {
-                                            // console.log(JSON.stringify(resp));
-                                            // setClientToken(resp.data.data.userinfo.api_token);
-                                            AsyncStorage.setItem('logged', 'true');
-                                            AsyncStorage.setItem('user_info', JSON.stringify(resp.data.data.userinfo));
-                                            this.props.setUser(resp.data.data.userinfo);
-                                            this.props.navigation.reset({ routes: [{ name: 'App' }] });
-                                        } else {
-                                            this.setState({ loading: false });
-                                            this.refs.toast.show(resp.data.message, DURATION.LENGTH_LONG);
-                                        }
-                                    }).catch((error) => {
-                                        this.setState({ loading: false });
-                                        this.refs.toast.show(error.message, DURATION.LENGTH_LONG);
-                                    })
-                                }).catch((error) => {
-                                    this.setState({ loading: false });
-                                    this.refs.toast.show(error.message, DURATION.LENGTH_LONG);
-                                })
-                            });
-                        } else {
-                            API.post('/user_login', {
-                                user_type: 'D',
-                                email: resp.user.email,
-                                password: '123456',
-                                fcm_id: this.props.device_token,
-                                device_token: this.props.device_token
-                            }).then((resp) => {
-                                if (resp.data.success == 1) {
-                                    if (resp.data.data.userinfo.vehicle_info == null) {
-                                        this.refs.toast.show("Please register vehicle type from Adminitrator.", DURATION.LENGTH_LONG);
-                                        this.setState({ loading: false });
-                                    } else {
-                                        // console.log(JSON.stringify(resp));
-                                        // setClientToken(resp.data.data.userinfo.api_token);
-                                        AsyncStorage.setItem('logged', 'true');
-                                        AsyncStorage.setItem('user_info', JSON.stringify(resp.data.data.userinfo));
-                                        this.props.setUser(resp.data.data.userinfo);
-                                        this.props.navigation.reset({ routes: [{ name: 'App' }] });
-                                    }
-                                } else {
-                                    this.setState({ loading: false });
-                                    this.refs.toast.show(resp.data.message, DURATION.LENGTH_LONG);
-                                }
-                            }).catch((error) => {
-                                this.setState({ loading: false });
-                                this.refs.toast.show(error.message, DURATION.LENGTH_LONG);
-                            })
-                        }
-                    }).catch(error => {
-                        this.setState({ loading: false });
-                        this.refs.toast.show(error.message, DURATION.LENGTH_LONG);
-                    })
-            }
-        } catch ({ error }) {
-            this.setState({ loading: false });
-            this.refs.toast.show(language.facebook_login_auth_error`${error.message}`, DURATION.LENGTH_LONG);
+            await Facebook.initializeAsync('1643080409184364');
+            const {
+                type,
+                token
+            } = await Facebook.logInWithReadPermissionsAsync({
+                permissions: ['public_profile', "email"],
+            });
+
+        } catch ({ message }) {
+            alert(language.facebook_login_auth_error`${message}`);
         }
     }
 
-    async onLogin() {
+    onPressLogin() {
         let { email, password } = this.state;
         if (!email) {
             this.setState({ emailMsg: "Should not be empty" });
@@ -152,38 +110,20 @@ class Login extends Component {
                     if (!verifyLength(password, 6)) {
                         this.setState({ passwordMsg: "Enter more 6 character" });
                     } else {
-                        this.setState({ passwordMsg: null, loading: true });
-                        firebase.auth().signInWithEmailAndPassword(email, password).then((user) => {
-                            API.post('/user_login', {
-                                user_type: 'D',
-                                email: email,
-                                password: password,
-                                fcm_id: this.props.device_token,
-                                device_token: this.props.device_token
-                            }).then((resp) => {
-                                if (resp.data.success == 1) {
-                                    if (resp.data.data.userinfo.vehicle_info == null) {
-                                        this.refs.toast.show("Please register vehicle type from Adminitrator.", DURATION.LENGTH_LONG);
-                                        this.setState({ loading: false });
-                                    } else {
-                                        // console.log(JSON.stringify(resp));
-                                        // setClientToken(resp.data.data.userinfo.api_token);
-                                        AsyncStorage.setItem('logged', 'true');
-                                        AsyncStorage.setItem('user_info', JSON.stringify(resp.data.data.userinfo));
-                                        this.props.setUser(resp.data.data.userinfo);
-                                        this.props.navigation.reset({ routes: [{ name: 'App' }] });
-                                    }
-                                } else {
-                                    this.setState({ loading: false });
-                                    this.refs.toast.show(resp.data.message, DURATION.LENGTH_LONG);
-                                }
-                            }).catch((error) => {
-                                this.setState({ loading: false });
-                                this.refs.toast.show(error.message, DURATION.LENGTH_LONG);
-                            })
-                        }).catch((error) => {
-                            this.setState({ loading: false });
-                            this.refs.toast.show(error.message, DURATION.LENGTH_LONG);
+                        this.setState({ passwordMsg: null });
+                        // alert(await AsyncStorage.getItem('fcmToken'));
+                        API.post('/user_login', {
+                            email: email,
+                            password: password,
+                        }).then((resp) => {
+                            if (resp.data.success == 1) {
+                                AsyncStorage.setItem('LOGGED', 'true');
+                                AsyncStorage.setItem('USER', JSON.stringify(resp.data.data.userinfo));
+                                this.props.setUser(resp.data.data.userinfo);
+                                this.props.navigation.navigate('Root');
+                            } else (
+                                alert(resp.data.message)
+                            )
                         })
                     }
                 }
@@ -191,28 +131,49 @@ class Login extends Component {
         }
     }
 
-    renderHeader() {
+    loading() {
         return (
-            <View style={styles.header}>
-                <View style={{ flex: 6 }} />
-                <View style={{ flex: 4, justifyContent: 'flex-end', alignItems: 'center', marginBottom: 2 }}>
-                    <TouchableOpacity onPress={() => this.props.navigation.push('Forgot')}>
-                        <Text style={{ color: colors.WHITE }}>Forgot Password?</Text>
-                    </TouchableOpacity>
+            <Modal
+                animationType="fade"
+                transparent={true}
+                visible={this.state.loadingModal}
+                onRequestClose={() => {
+                    this.setState({ loadingModal: false })
+                }}
+            >
+                <View style={{ flex: 1, backgroundColor: "rgba(22,22,22,0.8)", justifyContent: 'center', alignItems: 'center' }}>
+                    <View style={{ width: '85%', backgroundColor: "#DBD7D9", borderRadius: 10, flex: 1, maxHeight: 70 }}>
+                        <View style={{ alignItems: 'center', flexDirection: 'row', flex: 1, justifyContent: "center" }}>
+                            <Image
+                                style={{ width: 80, height: 80, backgroundColor: colors.TRANSPARENT }}
+                                source={require('@assets/images/loader.gif')}
+                            />
+                            <View style={{ flex: 1 }}>
+                                <Text style={{ color: "#000", fontSize: 16, }}>{"Loading..."}</Text>
+                            </View>
+                        </View>
+                    </View>
                 </View>
-            </View>
+            </Modal>
         )
     }
 
     render() {
         return (
             <View style={styles.container}>
-                <StatusBar hidden={false} translucent backgroundColor={colors.TRANSPARENT} />
-                <ImageBackground source={images.img_background} resizeMode="stretch" style={{ flex: 1 }}>
+                <StatusBar translucent backgroundColor="transparent" />
+                <ImageBackground
+                    source={require("@assets/images/background.png")}
+                    resizeMode="stretch"
+                    style={{ flex: 1 }}
+                >
                     <SafeAreaView style={{ flex: 1 }}>
-                        {this.renderHeader()}
-                        <KeyboardAwareScrollView contentContainerStyle={{ alignItems: 'center' }}>
-                            <Image source={images.img_logo} style={{ marginTop: 100, marginBottom: 20, width: 130, height: 150 }} />
+                        <Header title="" isStatus="login" navigation={this.props.navigation} />
+                        <KeyboardAwareScrollView>
+                            <View style={styles.applogoframe}>
+                                <Image source={require('@assets/images/applogo.png')}
+                                    style={styles.applogo}></Image>
+                            </View>
                             <View style={styles.containerStyle}>
                                 <View style={styles.textInputContainerStyle}>
                                     <Icon
@@ -265,14 +226,20 @@ class Login extends Component {
                                     />
                                 </View>
                             </View>
-                            <TouchableOpacity onPress={() => this.onLogin()} style={[styles.button, { width: wp('85.0%') }]}>
-                                <Text style={{ fontSize: 15, fontWeight: 'bold' }}>{language.login_button}</Text>
-                            </TouchableOpacity>
+                            <MaterialButtonYellow
+                                onPress={() => this.onPressLogin()}
+                                style={styles.materialButtonYellow}>
+                                {language.login_button}
+                            </MaterialButtonYellow>
                             <View style={styles.pairButton}>
-                                <TouchableOpacity onPress={() => this.props.navigation.push("Signup")} style={[styles.button, { width: wp('40.0%') }]}>
-                                    <Text style={{ fontSize: 15, fontWeight: 'bold' }}>{language.signup_button}</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity onPress={() => this.FbLogin()} style={styles.FBStyle}>
+                                <MaterialButtonYellow
+                                    onPress={() => this.props.navigation.navigate("Signup")}
+                                    style={styles.SignupStyle}>
+                                    {language.signup_button}
+                                </MaterialButtonYellow>
+                                <TouchableOpacity
+                                    onPress={() => this.FbLogin()}
+                                    style={styles.FBStyle}>
                                     <Text style={{ color: '#FFF', width: '80%', textAlign: 'center', fontWeight: 'bold', fontSize: 15 }}>CONNECT</Text>
                                     <View style={styles.FBIconStyle}>
                                         <Image
@@ -284,15 +251,7 @@ class Login extends Component {
                         </KeyboardAwareScrollView>
                     </SafeAreaView>
                 </ImageBackground>
-                <Loading loading={this.state.loading} />
-                <Toast
-                    ref="toast"
-                    position='top'
-                    positionValue={50}
-                    fadeInDuration={750}
-                    fadeOutDuration={1000}
-                    opacity={0.8}
-                />
+                {this.loading()}
             </View>
         );
     }
@@ -302,12 +261,14 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
     },
-    header: {
-        flexDirection: 'row',
-        width: wp('100.0%'),
-        paddingLeft: 20,
-        paddingRight: 20,
-        height: Platform.OS === 'ios' ? 40 : 70
+    applogoframe: {
+        marginTop: hp('15.0%'),
+        alignSelf: "center"
+    },
+    applogo: {
+        width: 130,
+        height: 135,
+        marginBottom: 20
     },
 
     containerStyle: {
@@ -332,36 +293,35 @@ const styles = StyleSheet.create({
     },
     inputContainerStyle: {
         borderBottomWidth: 0,
-        borderBottomColor: colors.WHITE
+        borderBottomColor: '#FFF'
+    },
+
+    materialButtonYellow: {
+        height: 45,
+        marginLeft: 30,
+        marginRight: 30
     },
     pairButton: {
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
-        width: wp('85.0%'),
         height: 50,
         backgroundColor: "rgba(255,255,255,0)",
         marginTop: 20,
         marginLeft: 30,
         marginRight: 30,
     },
-    button: {
-        backgroundColor: "#FDF75C",
-        alignItems: "center",
-        justifyContent: "center",
-        borderRadius: 10,
+    SignupStyle: {
+        width: '48%',
         height: 45,
-        shadowColor: colors.BLACK,
-        shadowOffset: { height: 1, width: 0 },
-        shadowOpacity: 0.35,
-        shadowRadius: 5
+        borderRadius: 10,
     },
     FBStyle: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        width: wp('40.0%'),
-        height: 48,
+        width: '48%',
+        height: 45,
         backgroundColor: "rgba(61,96,182,1)",
         borderRadius: 10,
     },
@@ -377,11 +337,6 @@ const styles = StyleSheet.create({
     }
 });
 
-const mapStateToProps = state => {
-    return {
-        device_token: state.account.device_token
-    }
-}
 const mapDispatchToProps = dispatch => {
     return {
         setUser: (data) => {
@@ -389,4 +344,4 @@ const mapDispatchToProps = dispatch => {
         }
     }
 }
-export default connect(mapStateToProps, mapDispatchToProps)(Login)
+export default connect(undefined, mapDispatchToProps)(Login)

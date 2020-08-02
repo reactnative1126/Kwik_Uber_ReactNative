@@ -13,21 +13,24 @@ export default class MapComponent extends Component {
         const { mapRegion, mapStyle, nearby, onRegionChangeComplete } = this.props;
         return (
             <MapView
-                // provider={PROVIDER_GOOGLE}
+                provider={PROVIDER_GOOGLE}
                 showsUserLocation={true}
                 loadingEnabled
                 showsMyLocationButton={false}
                 style={[mapStyle, { marginBottom: this.state.marginBottom }]}
                 region={mapRegion}
                 onRegionChangeComplete={onRegionChangeComplete}
+                //onRegionChange={onRegionChange}
+                //onPanDrag={onPanDrag}
                 onMapReady={() => this.setState({ marginBottom: 1 })}
             >
                 {nearby ? nearby.map((item, index) => {
                     return (
                         <Marker.Animated
-                            coordinate={{ latitude: item.driver_lat, longitude: item.driver_long }}
+                            coordinate={{ latitude: item.location ? item.location.lat : 0.00, longitude: item.location ? item.location.lng : 0.00 }}
                             key={index}
                             image={require('@assets/images/available_car.png')}
+                        //tracksViewChanges={this.state.tracksViewChanges}
                         ></Marker.Animated>
                     )
                 })

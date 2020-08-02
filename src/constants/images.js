@@ -1,10 +1,4 @@
 export default {
-    img_background: require("@assets/images/background.png"),
-    img_logo: require('@assets/images/applogo.png'),
-    img_loading: require('@assets/images/loader8.gif'),
-    
-    
-    icon_app: require('@assets/images/appIcon.png'),
     icon_arrow: require('@assets/icons/arrow.png'),
     icon_back: require('@assets/icons/back.png'),
     icon_user: require('@assets/icons/user.png'),
@@ -21,6 +15,5 @@ export default {
     img_uber: require('@assets/images/uber.png'),
     img_lyft: require('@assets/images/lyft.png'),
     img_driver: require('@assets/images/driver.png'),
-    img_avatar: require('@assets/images/customer.png'),
-    img_arriving: require('@assets/images/arriving.png'),
+    img_avatar: require('@assets/images/avatar.png'),
 }

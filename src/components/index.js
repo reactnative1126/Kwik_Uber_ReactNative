@@ -1,15 +1,13 @@
-import Loading from './Loading';
+import Header from './Header';
 import Register from './Register';
+import SideMenu from './SideMenu';
 import MapComponent from './MapComponent';
 import Rating from './Rating';
-// import PayBraintree from './PayBraintree';
-// import PayStripe from './PayStripe';
 
 export {
-    Loading,
+    Header,
     Register,
+    SideMenu,
     MapComponent,
     Rating,
-    // PayBraintree,
-    // PayStripe
 };

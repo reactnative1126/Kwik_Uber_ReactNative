@@ -93,7 +93,7 @@ export default {
     contact_details: 'Contact Details',
     phone: 'Phone',
     my_wallet_tile: 'My Wallet',
-    wallet_balance: 'Wallet Balance',
+    wallet_ballance: 'Wallet Balance',
     add_money: 'Add Money',
     transaction_history_title: 'Wallet Transaction History',
     successfully: 'Successfully',
@@ -192,5 +192,6 @@ export default {
     android_channel: 'GrabCab Notifications',
     write_message: 'Write your message',
     terms: "Terms & Conditions",
+
     email_number_placeholder: "Email or Phone Number"
 }

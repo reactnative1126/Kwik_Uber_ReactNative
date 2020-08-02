@@ -2,140 +2,97 @@ import React, { Component } from "react";
 import {
     StyleSheet,
     SafeAreaView,
-    ScrollView,
     View,
-    Image,
     Text,
     TouchableOpacity,
     StatusBar,
 } from "react-native";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { Icon, Input } from 'react-native-elements';
-import { GiftedChat } from 'react-native-gifted-chat';
+import { Input } from 'react-native-elements'
 
-import { Header, Rating } from '@components';
-import images from '@constants/images';
+import { Header } from '@components';
 
-export default class Message extends Component {
+export default class Password extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            driverName: 'Jane Pohlson',
-            messages: []
+
         }
     }
-    componentDidMount() {
-        this.setState({
-            messages: [
-                {
-                    _id: 1,
-                    text: 'Hello developer',
-                    createdAt: new Date(),
-                    user: {
-                        _id: 2,
-                        name: 'React Native',
-                        avatar: 'https://placeimg.com/140/140/any',
-                    },
-                },
-                {
-                    _id: 2,
-                    text: 'My message',
-                    createdAt: new Date(Date.UTC(2016, 5, 11, 17, 20, 0)),
-                    user: {
-                        _id: 2,
-                        name: 'React Native',
-                        avatar: 'https://facebook.github.io/react/img/logo_og.png',
-                    },
-                    image: 'https://i.pinimg.com/236x/1c/11/0c/1c110c83c0e680ca9eef7b27691421cd--images-of-love-love-pictures.jpg',
-                    // You can also add a video prop:
-                    video: 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
-                    // Any additional custom parameters are passed through
-                },
-                {
-                    _id: 3,
-                    text: 'This is a system message',
-                    createdAt: new Date(Date.UTC(2016, 5, 11, 17, 20, 0)),
-                    system: true,
-                    // Any additional custom parameters are passed through
-                },
-                {
-                    _id: 4,
-                    text: 'This is a quick reply. Do you love Gifted Chat? (radio) KEEP IT',
-                    createdAt: new Date(),
-                    quickReplies: {
-                        type: 'radio', // or 'checkbox',
-                        keepIt: true,
-                        values: [
-                            {
-                                title: '😋 Yes',
-                                value: 'yes',
-                            },
-                            {
-                                title: '📷 Yes, let me show you with a picture!',
-                                value: 'yes_picture',
-                            },
-                            {
-                                title: '😞 Nope. What?',
-                                value: 'no',
-                            },
-                        ],
-                    },
-                    user: {
-                        _id: 1,
-                        name: 'React Native',
-                    },
-                },
-                {
-                    _id: 5,
-                    text: 'This is a quick reply. Do you love Gifted Chat? (checkbox)',
-                    createdAt: new Date(),
-                    quickReplies: {
-                        type: 'checkbox', // or 'radio',
-                        values: [
-                            {
-                                title: 'Yes',
-                                value: 'yes',
-                            },
-                            {
-                                title: 'Yes, let me show you with a picture!',
-                                value: 'yes_picture',
-                            },
-                            {
-                                title: 'Nope. What?',
-                                value: 'no',
-                            },
-                        ],
-                    },
-                    user: {
-                        _id: 2,
-                        name: 'React Native',
-                    },
-                }
-            ],
-        })
-    }
-
-    onSend(messages = []) {
-        this.setState(previousState => ({
-            messages: GiftedChat.append(previousState.messages, messages),
-        }))
-    }
-
 
     render() {
         return (
             <View style={styles.container}>
                 <StatusBar translucent backgroundColor="transparent" />
                 <SafeAreaView style={{ flex: 1 }}>
-                    <Header title={this.state.driverName} type="driver" isStatus="back-circle" navigation={this.props.navigation} />
+                    <Header title="Update Password" isStatus="back-circle" navigation={this.props.navigation} />
                     <View style={{ width: '100%', alignItems: 'center', height: 20 }} />
-                    <GiftedChat
-                        messages={this.state.messages}
-                        onSend={messages => this.onSend(messages)}
-                        user={{
-                            _id: 1,
-                        }}
-                    />
+                    <View style={{ flex: 1, padding: 20, width: '100%', alignItems: 'center', backgroundColor: '#D8D8D8' }}>
+                        <View style={{
+                            flexDirection: 'row',
+                            justifyContent: 'space-between', alignItems: 'center',
+                            marginTop: 20,
+                            width: '100%', height: 50,
+                            backgroundColor: '#FFF',
+                            borderRadius: 10,
+                            shadowColor: '#00F561',
+                            shadowOpacity: 0.8,
+                            shadowOffset: { height: 1, width: 1 },
+                            shadowRadius: 2,
+                            elevation: 5,
+                            padding: 10
+                        }}>
+                            <Input
+                                ref={input => (this.passwordInput = input)}
+                                editable={true}
+                                underlineColorAndroid={'rgba(240, 240, 240, 0)'}
+                                placeholder={"New Password"}
+                                placeholderTextColor={'rgba(200, 200, 200, 0.8)'}
+                                secureTextEntry={true}
+                                blurOnSubmit={false}
+                                value={this.state.password}
+                                onChangeText={(text) => { this.setState({ password: text }) }}
+                                onSubmitEditing={() => { this.confirmInput.focus() }}
+                                inputContainerStyle={styles.inputContainerStyle}
+                                containerStyle={styles.textInputStyle}
+                                inputStyle={styles.inputTextStyle}
+                            />
+                        </View>
+                        <View style={{
+                            flexDirection: 'row',
+                            justifyContent: 'space-between', alignItems: 'center',
+                            marginTop: 20,
+                            width: '100%', height: 50,
+                            backgroundColor: '#FFF',
+                            borderRadius: 10,
+                            shadowColor: '#00F561',
+                            shadowOpacity: 0.8,
+                            shadowOffset: { height: 1, width: 1 },
+                            shadowRadius: 2,
+                            elevation: 5,
+                            padding: 10
+                        }}>
+                            <Input
+                                ref={input => (this.confirmInput = input)}
+                                editable={true}
+                                underlineColorAndroid={'rgba(240, 240, 240, 0)'}
+                                placeholder={"Repeat New Password"}
+                                placeholderTextColor={'rgba(200, 200, 200, 0.8)'}
+                                secureTextEntry={true}
+                                blurOnSubmit={false}
+                                value={this.state.confirm}
+                                onChangeText={(text) => { this.setState({ confirm: text }) }}
+                                inputContainerStyle={styles.inputContainerStyle}
+                                containerStyle={styles.textInputStyle}
+                                inputStyle={styles.inputTextStyle}
+                            />
+                        </View>
+                    </View>
+                    <View style={{ position: 'absolute', bottom: 0, width: '100%', padding: 20 }}>
+                        <TouchableOpacity style={styles.rideBtn}>
+                            <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#FFF' }}>SUBMIT</Text>
+                        </TouchableOpacity>
+                    </View>
                 </SafeAreaView>
             </View>
         );

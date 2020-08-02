@@ -1,37 +1,49 @@
 import React, { Component } from "react";
 import {
-    StatusBar,
     StyleSheet,
-    SafeAreaView,
+    View,
     LayoutAnimation,
     ImageBackground,
-    TouchableOpacity,
-    View,
     Text,
-    Image
+    SafeAreaView
 } from "react-native";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Icon, Input } from 'react-native-elements';
-import Toast, { DURATION } from 'react-native-easy-toast';
 
-import { Loading } from '@components';
-import { theme, colors } from '@constants/theme';
-import images from '@constants/images';
-import configs from '@constants/configs';
-import language from '@constants/language';
-import API from '@services/API';
+import * as firebase from 'firebase';
+import { Header } from '@components';
+import MaterialButtonYellow from "@components/MaterialButtonYellow";
+
 
 export default class Forgot extends Component {
+
     constructor(props) {
         super(props);
         this.state = {
             email: null,
             emailValid: true,
-            loading: false
+            loadingModal: false
         }
     }
 
+    onPressLogin = async () => {
+        LayoutAnimation.easeInEaseOut();
+        const emailValid = this.validateEmail();
+        if (emailValid) {
+            this.setState({ loadingModal: true });
+            firebase.auth().sendPasswordResetEmail(this.state.email)
+                .then((user) => {
+                    alert("Please check your email...");
+                }).catch((e) => {
+                    alert(e);
+                })
+
+        }
+
+    }
+
+    // email validation
     validateEmail() {
         const { email } = this.state
         const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
@@ -42,45 +54,17 @@ export default class Forgot extends Component {
         return emailValid
     }
 
-    onForgot = async () => {
-        LayoutAnimation.easeInEaseOut();
-        const emailValid = this.validateEmail();
-        if (emailValid) {
-            this.setState({ loading: true });
-            await API.post('/forgot_password', {
-                email: this.state.email
-            }).then((resp) => {
-                if (resp.data.success == 1) {
-                    this.props.navigation.pop();
-                } else {
-                    this.setState({ loading: false });
-                    this.refs.toast.show(resp.data.message, DURATION.LENGTH_LONG);
-                }
-            })
-        }
-    }
-
-    renderHeader() {
-        return (
-            <View style={styles.header}>
-                <View style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'flex-end', marginBottom: 2 }}>
-                    <TouchableOpacity style={{ width: 20, height: 20 }} onPress={() => this.props.navigation.pop()}>
-                        <Image style={{ width: 20, height: 20, tintColor: 'rgba(255, 255, 255, 1)' }} source={images.icon_back} />
-                    </TouchableOpacity>
-                </View>
-                <View style={{ flex: 14 }} />
-            </View>
-        )
-    }
-
     render() {
         return (
             <View style={styles.container}>
-                <StatusBar hidden={false} translucent backgroundColor={colors.TRANSPARENT} />
-                <ImageBackground source={images.img_background} resizeMode="stretch" style={{ flex: 1 }}>
+                <ImageBackground
+                    source={require("@assets/images/background.png")}
+                    resizeMode="stretch"
+                    style={styles.imagebg}
+                >
                     <SafeAreaView style={{ flex: 1 }}>
-                        {this.renderHeader()}
-                        <KeyboardAwareScrollView contentContainerStyle={{ alignItems: 'center' }}>
+                        <Header title="" isStatus="back" navigation={this.props.navigation} />
+                        <KeyboardAwareScrollView>
                             <View style={styles.titleView}>
                                 <Text style={{ fontSize: 32, fontWeight: '900', color: '#FFF' }}>FORGOT PASSWORD?</Text>
                             </View>
@@ -98,6 +82,7 @@ export default class Forgot extends Component {
                                     />
                                     <Input
                                         ref={input => (this.emailInput = input)}
+                                        // editable={this.props.reqData.profile.email ? false : true}
                                         underlineColorAndroid={'rgba(240, 240, 240, 0)'}
                                         placeholder={"Enter your Email id"}
                                         placeholderTextColor={'rgba(240, 240, 240, 0.8)'}
@@ -114,21 +99,14 @@ export default class Forgot extends Component {
                                     />
                                 </View>
                             </View>
-                            <TouchableOpacity onPress={() => this.onForgot()} style={[styles.button, { width: wp('85.0%') }]}>
-                                <Text style={{ fontSize: 15, fontWeight: 'bold' }}>SUBMIT</Text>
-                            </TouchableOpacity>
+                            <MaterialButtonYellow
+                                onPress={() => this.onPressLogin()}
+                                style={styles.materialButtonYellow}>
+                                {"SUBMIT"}
+                            </MaterialButtonYellow>
                         </KeyboardAwareScrollView>
                     </SafeAreaView>
                 </ImageBackground>
-                <Loading loading={this.state.loading}/>
-                <Toast
-                    ref="toast"
-                    position='top'
-                    positionValue={20}
-                    fadeInDuration={750}
-                    fadeOutDuration={1000}
-                    opacity={0.8}
-                />
             </View>
         );
     }
@@ -138,12 +116,8 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
     },
-    header: {
-        flexDirection: 'row',
-        width: wp('100.0%'),
-        paddingLeft: 20,
-        paddingRight: 20,
-        height: Platform.OS === 'ios' ? 40 : 70
+    imagebg: {
+        flex: 1,
     },
     mainView: {
         flex: 1,
@@ -154,10 +128,10 @@ const styles = StyleSheet.create({
         paddingRight: 20
     },
     titleView: {
-        width: wp('100.0%'),
         marginTop: hp('5.0%'),
         paddingLeft: 30,
-        paddingRight: 30
+        paddingRight: 30,
+        alignSelf: "center"
     },
     descriptionView: {
         marginTop: 10,
@@ -190,16 +164,11 @@ const styles = StyleSheet.create({
         borderBottomWidth: 0,
         borderBottomColor: '#FFF'
     },
-    button: {
-        backgroundColor: "#FDF75C",
-        alignItems: "center",
-        justifyContent: "center",
-        borderRadius: 10,
+    materialButtonYellow: {
         height: 45,
-        shadowColor: colors.BLACK,
-        shadowOffset: { height: 1, width: 0 },
-        shadowOpacity: 0.35,
-        shadowRadius: 5
+        marginTop: 20,
+        marginLeft: 30,
+        marginRight: 30
     },
     errorMessageStyle: {
         fontSize: 12,

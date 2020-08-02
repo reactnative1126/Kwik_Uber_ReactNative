@@ -9,55 +9,17 @@ import {
     TouchableOpacity,
     StatusBar,
 } from "react-native";
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { Icon } from 'react-native-elements'
 
-import { colors } from '@constants/theme';
-import images from '@constants/images';
-import configs from '@constants/configs';
-import language from '@constants/language';
-import API from '@services/API';
+import { Header } from '@components';
 
 export default class About extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            tab: 1
+            tab: this.props.navigation.getParam('tab'),
         }
     }
-
-    renderHeader() {
-        return (
-            <View style={[styles.header, { zIndex: 1000 }]}>
-                <View style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'flex-end', marginBottom: 2 }}>
-                    <TouchableOpacity
-                        style={{
-                            width: 40,
-                            height: 40,
-                            backgroundColor: '#FFF949',
-                            borderRadius: 20,
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            shadowColor: '#000',
-                            shadowOpacity: 0.8,
-                            shadowOffset: { height: 1, width: 1 },
-                            shadowRadius: 2,
-                            elevation: 5,
-                        }}
-                        onPress={() => this.props.navigation.goBack()}>
-                        <Image
-                            style={{ width: 15, height: 15, tintColor: 'rgba(0, 0, 0, 1)' }}
-                            source={images.icon_back} />
-                    </TouchableOpacity>
-                </View>
-                <View style={{ flex: 8, justifyContent: 'center', alignItems: 'center' }}>
-                    <Image style={{ width: 80, height: 30 }} source={images.icon_title} />
-                </View>
-                <View style={{ flex: 1 }} />
-            </View>
-        );
-    }
-
     renderAboutUs() {
         return (
             <View style={{ backgroundColor: '#D5D5D5', flex: 1 }}>
@@ -69,14 +31,14 @@ export default class About extends Component {
                             width: '100%', height: 300,
                             backgroundColor: '#FFF',
                             borderRadius: 10,
-                            shadowColor: '#000',
+                            shadowColor: '#00F561',
                             shadowOpacity: 0.8,
                             shadowOffset: { height: 1, width: 1 },
                             shadowRadius: 2,
                             elevation: 5,
                             padding: 20
                         }}>
-                            <Image style={{ width: 100, height: 100 }} source={images.icon_app} />
+                            <Image style={{ width: 100, height: 100 }} source={require('@assets/images/appIcon.png')} />
                             <Text style={{ fontSize: 10 }}>TAXI SERVICE APP</Text>
                             <Text style={{ marginTop: 10, fontSize: 14, fontWeight: 'bold' }}>Version 2.0</Text>
                             <Text style={{ marginTop: 10, fontSize: 15, color: '#888', textAlign: 'center' }}>Ut enim  ad minima veniam, quis nostrud exercitation ullam laborios nisi ut aliquid ex ea commodi consequat.</Text>
@@ -88,15 +50,15 @@ export default class About extends Component {
                             width: '100%', height: 50,
                             backgroundColor: '#FFF',
                             borderRadius: 10,
-                            shadowColor: '#000',
+                            shadowColor: '#00F561',
                             shadowOpacity: 0.8,
                             shadowOffset: { height: 1, width: 1 },
                             shadowRadius: 2,
                             elevation: 5,
-                            paddingLeft: 20, paddingRight: 20
-                        }}>
+                            padding: 20
+                        }} onPress={() => this.props.navigation.navigate('Rating')}>
                             <Icon name='star-o' type='font-awesome' color='#888' size={20} />
-                            <Text style={{ width: '80%', fontWeight: 'bold' }}>Rate on the Play Store</Text>
+                            <Text style={{width: '80%', fontWeight: 'bold'}}>Rate on the Play Store</Text>
                             <Icon name='caret-right' type='font-awesome' color='#019E4C' size={20} />
                         </TouchableOpacity>
                         <TouchableOpacity style={{
@@ -106,15 +68,15 @@ export default class About extends Component {
                             width: '100%', height: 50,
                             backgroundColor: '#FFF',
                             borderRadius: 10,
-                            shadowColor: '#000',
+                            shadowColor: '#00F561',
                             shadowOpacity: 0.8,
                             shadowOffset: { height: 1, width: 1 },
                             shadowRadius: 2,
                             elevation: 5,
-                            paddingLeft: 20, paddingRight: 20
+                            padding: 20
                         }}>
                             <Icon name='paper-plane-o' type='font-awesome' color='#888' size={20} />
-                            <Text style={{ width: '80%', fontWeight: 'bold' }}>Invite your friend to join</Text>
+                            <Text style={{width: '80%', fontWeight: 'bold'}}>Invite your friend to join</Text>
                             <Icon name='caret-right' type='font-awesome' color='#019E4C' size={20} />
                         </TouchableOpacity>
                         <TouchableOpacity style={{
@@ -124,15 +86,15 @@ export default class About extends Component {
                             width: '100%', height: 50,
                             backgroundColor: '#FFF',
                             borderRadius: 10,
-                            shadowColor: '#000',
+                            shadowColor: '#00F561',
                             shadowOpacity: 0.8,
                             shadowOffset: { height: 1, width: 1 },
                             shadowRadius: 2,
                             elevation: 5,
-                            paddingLeft: 20, paddingRight: 20
+                            padding: 20
                         }}>
                             <Icon name='bug' type='font-awesome' color='#888' size={20} />
-                            <Text style={{ width: '80%', fontWeight: 'bold' }}>Report a bug</Text>
+                            <Text style={{width: '80%', fontWeight: 'bold'}}>Report a bug</Text>
                             <Icon name='caret-right' type='font-awesome' color='#019E4C' size={20} />
                         </TouchableOpacity>
                     </View>
@@ -151,6 +113,7 @@ export default class About extends Component {
                         <Text style={{ marginTop: 20, marginBottom: 20, fontSize: 17 }}>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis prasentium voluptatum deleniti atque corrupti quos dolores</Text>
                         <Text style={{ marginTop: 20, fontSize: 17, fontWeight: 'bold' }}>3. Exceptiro somt pccaecato cipodotate mpm prpodemt simt?</Text>
                         <Text style={{ marginTop: 20, fontSize: 17 }}>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis prasentium voluptatum deleniti atque corrupti quos dolores</Text>
+
                     </View>
                 </ScrollView>
             </View>
@@ -160,9 +123,9 @@ export default class About extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <StatusBar hidden={false} translucent backgroundColor="transparent" />
-                <SafeAreaView hidden={false} style={{ flex: 1 }}>
-                    {this.renderHeader()}
+                <StatusBar translucent backgroundColor="transparent" />
+                <SafeAreaView style={{ flex: 1 }}>
+                    <Header title="kwik" isStatus="back-circle" navigation={this.props.navigation} />
                     <View style={styles.topTab}>
                         <TouchableOpacity style={this.state.tab == 1 ? styles.selTab : styles.tab} onPress={() => this.setState({ tab: 1 })}>
                             <Text style={this.state.tab == 1 ? { color: '#03B273' } : { color: '#000' }}>About Us</Text>
@@ -184,28 +147,6 @@ export default class About extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1
-    },
-    header: {
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: wp('100.0%'),
-        paddingLeft: 20,
-        paddingRight: 20,
-        height: Platform.OS === 'ios' ? 70 : 70
-    },
-    menuBTN: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: "#FFF949",
-        width: 40,
-        height: 40,
-        borderRadius: 50,
-        shadowColor: '#000',
-        shadowOpacity: 0.8,
-        shadowOffset: { height: 1, width: 1 },
-        shadowRadius: 2,
-        elevation: 10,
     },
     topTab: {
         flexDirection: 'row',

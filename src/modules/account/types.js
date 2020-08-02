@@ -1,6 +1,4 @@
 export default {
     SET_USER: 'SET_USER',
-    SIGN_OUT: 'SIGN_OUT',
-    SET_DEVICE_TOKEN: 'SET_DEVICE_TOKEN',
-    SET_CUSTOMER: 'SET_CUSTOMER'
+    SIGN_OUT: 'SIGN_OUT'
 }

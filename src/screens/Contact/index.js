@@ -1,99 +1,36 @@
 import React, { Component } from "react";
 import {
-    StatusBar,
     StyleSheet,
     SafeAreaView,
-    TouchableOpacity,
-    ScrollView,
     View,
     TextInput,
     Text,
-    Image,
+    TouchableOpacity,
+    StatusBar,
 } from "react-native";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { Icon } from 'react-native-elements';
-import Toast, { DURATION } from 'react-native-easy-toast';
 
-import { connect } from 'react-redux';
-import { Loading } from '@components';
-import { colors } from '@constants/theme';
-import images from '@constants/images';
-import configs from '@constants/configs';
-import language from '@constants/language';
-import API from '@services/API';
+import { Header } from '@components';
 
-class Contact extends Component {
+export default class index extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            message: '',
-            loading: false
+
         }
-    }
-
-    async onMessage() {
-        this.setState({ loading: true });
-        await API.post('/message_us', {
-            user_id: this.props.user_info.user_id,
-            fcm_id: this.props.user_info.fcm_id,
-            device_token: this.props.user_info.device_token,
-            message: this.state.message,
-            api_token: this.props.user_info.api_token
-        }).then((resp) => {
-            if (resp.data.success == 1) {
-                this.refs.toast.show(resp.data.message, DURATION.LENGTH_LONG);
-                this.setState({ loading: false, message: '' });
-            } else {
-                this.refs.toast.show(resp.data.message, DURATION.LENGTH_LONG);
-                this.setState({ loading: false });
-            }
-        }).catch((error) => {
-            this.refs.toast.show(error.message, DURATION.LENGTH_LONG);
-            this.setState({ loading: false });
-        });
-    }
-
-    renderHeader() {
-        return (
-            <View style={[styles.header, { zIndex: 1000 }]}>
-                <View style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'flex-end', marginBottom: 2 }}>
-                    <TouchableOpacity
-                        style={{
-                            width: 40,
-                            height: 40,
-                            backgroundColor: '#FFF949',
-                            borderRadius: 20,
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            shadowColor: '#000',
-                            shadowOpacity: 0.8,
-                            shadowOffset: { height: 1, width: 1 },
-                            shadowRadius: 2,
-                            elevation: 5,
-                        }}
-                        onPress={() => this.props.navigation.goBack()}>
-                        <Image
-                            style={{ width: 15, height: 15, tintColor: 'rgba(0, 0, 0, 1)' }}
-                            source={images.icon_back} />
-                    </TouchableOpacity>
-                </View>
-                <View style={{ flex: 9, justifyContent: 'center' }}>
-                    <Text style={{ marginLeft: 20, fontSize: 16, fontWeight: 'bold', color: '#000' }}>Contact Us</Text>
-                </View>
-            </View>
-        );
     }
 
     render() {
         return (
             <View style={styles.container}>
-                <StatusBar hidden={false} translucent backgroundColor="transparent" />
+                <StatusBar translucent backgroundColor="transparent" />
                 <SafeAreaView style={{ flex: 1 }}>
-                    {this.renderHeader()}
-                    <ScrollView style={{ flex: 1, backgroundColor: '#E5E5E5', padding: 20 }}>
+                    <Header title="Contact Us" isStatus="back-circle" navigation={this.props.navigation} />
+                    <View style={{ width: '100%', alignItems: 'center', height: 20 }} />
+                    <View style={{ flex: 1, backgroundColor: '#E5E5E5', padding: 20 }}>
                         <View style={{
                             width: '100%', height: 200, backgroundColor: '#FFFFFF', borderRadius: 5, padding: 10,
-                            shadowColor: '#000',
+                            shadowColor: '#00F561',
                             shadowOpacity: 0.8,
                             shadowOffset: { height: 1, width: 1 },
                             shadowRadius: 2,
@@ -115,22 +52,15 @@ class Contact extends Component {
                             // inputStyle={{width: '100%', height: 80, verticalAlign: 'top'}}
                             // containerStyle={{width: '100%', height: 80, verticalAlign: 'top'}}
                             />
+                            <Text style={{ color: '#555', textAlign: 'right', marginTop: 20 }}>1200 Characters left</Text>
                         </View>
-                        <Text style={{ color: '#555', textAlign: 'right', marginTop: 20 }}>1200 Characters left</Text>
-                        <TouchableOpacity style={styles.rideBtn} onPress={() => this.onMessage()}>
-                            <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#FFF' }}>SEND MESSAGE</Text>
-                        </TouchableOpacity>
-                    </ScrollView>
+                        <View style={{ position: 'absolute', bottom: 0, width: '100%' }}>
+                            <TouchableOpacity style={styles.rideBtn}>
+                                <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#FFF' }}>SEND MESSAGE</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
                 </SafeAreaView>
-                <Loading loading={this.state.loading} />
-                <Toast
-                    ref="toast"
-                    position='top'
-                    positionValue={50}
-                    fadeInDuration={750}
-                    fadeOutDuration={1000}
-                    opacity={0.8}
-                />
             </View>
         );
     }
@@ -140,32 +70,72 @@ const styles = StyleSheet.create({
     container: {
         flex: 1
     },
-    header: {
+    topTab: {
         flexDirection: 'row',
-        justifyContent: 'center',
         alignItems: 'center',
-        width: wp('100.0%'),
-        paddingLeft: 20,
-        paddingRight: 20,
-        height: Platform.OS === 'ios' ? 70 : 70
+        width: '100%',
+        height: 60,
+        marginTop: 10,
+        borderTopWidth: 1,
+        borderBottomWidth: 1,
+        borderColor: '#D8D8D8',
+        // shadowColor: '#00F561',
+        // shadowOpacity: 0.8,
+        // shadowOffset: { height: 1, width: 1 },
+        // shadowRadius: 2,
+        // elevation: 10,
     },
-    menuBTN: {
+    tab: {
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: "#FFF949",
-        width: 40,
-        height: 40,
-        borderRadius: 50,
-        shadowColor: '#000',
+        width: '50%',
+        height: 60
+    },
+    selTab: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '50%',
+        height: 60,
+        // borderColor: '#D8D8D8',
+        borderBottomWidth: 2,
+        borderBottomColor: '#03B273'
+    },
+    itemPanel: {
+        justifyContent: 'space-between',
+        width: '100%',
+        height: 180,
+        borderRadius: 5,
+        backgroundColor: '#FFF',
+        marginTop: 10,
+        padding: 30,
+        shadowColor: '#00F561',
+        shadowOpacity: 0.8,
+        shadowOffset: { height: 1, width: 1 },
+        shadowRadius: 2,
+        elevation: 10,
+    },
+    rating: {
+        top: -30,
+        left: 25,
+        width: 35,
+        height: 35,
+        borderRadius: 30,
+        backgroundColor: '#00963D',
+        justifyContent: 'center',
+        alignItems: 'center',
+        shadowColor: '#00F561',
         shadowOpacity: 0.8,
         shadowOffset: { height: 1, width: 1 },
         shadowRadius: 2,
         elevation: 10,
     },
     rideBtn: {
+        position: 'absolute',
+        bottom: 10,
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 20,
+        marginLeft: 20,
+        marginTop: 5,
         marginBottom: 5,
         width: '100%',
         height: 50,
@@ -177,11 +147,14 @@ const styles = StyleSheet.create({
         shadowRadius: 2,
         elevation: 5,
     },
+    inputTextStyle: {
+        color: 'rgba(0, 0, 0, 0.8)',
+        fontSize: 15,
+        // height: 32,
+        // marginTop: 10
+    },
+    inputContainerStyle: {
+        borderBottomWidth: 0,
+        borderBottomColor: '#FFF'
+    },
 });
-
-const mapStateToProps = state => {
-    return {
-        user_info: state.account.user_info
-    }
-}
-export default connect(mapStateToProps, undefined)(Contact)

@@ -10,89 +10,42 @@ import {
     StatusBar,
 } from "react-native";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { Icon } from 'react-native-elements';
+import { Icon } from 'react-native-elements'
 
-import { connect } from 'react-redux';
-import { Rating, Loading } from '@components';
-import { colors } from '@constants/theme';
-import images from '@constants/images';
-import configs from '@constants/configs';
-import language from '@constants/language';
-import API from '@services/API';
+import { Header, Rating } from '@components';
 
-class Booking extends Component {
+const items = [
+    { index: 1, date: 'January 10 - 12:30 PM', pickup: 'Historical Library & Museum', destination: 'My Home' },
+    { index: 2, date: 'February 15 - 4:50 PM', pickup: 'Royal Light Cinema', destination: 'Historical Library & Museum' },
+    { index: 3, date: 'March 16 - 10:30 AM', pickup: 'My Home', destination: 'Historical Library & Museum' },
+]
+const histories = [
+    { index: 1, date: 'May 11 - 12:30 PM', pickup: 'My Home', destination: 'Historical Library & Museum' },
+    { index: 2, date: 'February 26 - 4:50 PM', pickup: 'Historical Library & Museum', destination: 'Royal Light Cinema' },
+    { index: 3, date: 'March 30 - 10:30 AM', pickup: 'Royal Light Cinema', destination: 'My Home' },
+]
+
+export default class Booking extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            tab: this.props.route.params.tab,
-            loading: false,
-            upcomings: [],
-            histories: [],
+            tab: this.props.navigation.getParam('tab'),
+            date: 'May 11 - 12:30 PM',
+            pickup: 'My Home',
+            destination: 'Historical Library & Museum',
             isDetail: false
         }
     }
-
-    async UNSAFE_componentWillMount() {
-        this.setState({ loading: true });
-        await API.post('/ride_history', {
-            customer_id: this.props.user_info.user_id,
-            api_token: this.props.user_info.api_token
-        }).then((resp) => {
-            if (resp.data.success == 1) {
-                this.setState({ upcomings: resp.data.data.upcoming_rides, histories: resp.data.data.completed_rides });
-                this.setState({ loading: false });
-            } else {
-                alert(resp.data.message);
-                this.setState({ loading: false });
-            }
-        }).catch((error) => {
-            console.log(error);
-            this.setState({ loading: false });
-        });
-    }
-
-    renderHeader() {
-        return (
-            <View style={[styles.header, { zIndex: 1000 }]}>
-                <View style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'flex-end', marginBottom: 2 }}>
-                    <TouchableOpacity
-                        style={{
-                            width: 40,
-                            height: 40,
-                            backgroundColor: '#FFF949',
-                            borderRadius: 20,
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            shadowColor: '#000',
-                            shadowOpacity: 0.8,
-                            shadowOffset: { height: 1, width: 1 },
-                            shadowRadius: 2,
-                            elevation: 5,
-                        }}
-                        onPress={() => this.props.navigation.goBack()}>
-                        <Image
-                            style={{ width: 15, height: 15, tintColor: 'rgba(0, 0, 0, 1)' }}
-                            source={images.icon_back} />
-                    </TouchableOpacity>
-                </View>
-                <View style={{ flex: 9, justifyContent: 'center' }}>
-                    <Text style={{ marginLeft: 20, fontSize: 16, fontWeight: 'bold', color: '#000' }}>Bookings</Text>
-                </View>
-            </View>
-        );
-    }
-
     renderUpcoming() {
-        const { upcomings } = this.state;
         return (
             <View style={{ backgroundColor: '#D5D5D5', flex: 1 }}>
                 <ScrollView>
                     <View style={{ width: '100%', paddingLeft: 20, paddingRight: 20, alignItems: 'center', marginBottom: 50 }}>
                         {
-                            upcomings.map((item, key) => {
+                            items.map((item, key) => {
                                 return (
                                     <View style={{ width: '100%', marginTop: 20, marginBottom: 10 }}>
-                                        <Text>{item.book_date} - {item.book_time}</Text>
+                                        <Text>{item.date}</Text>
                                         <TouchableOpacity onPress={() => this.onDetail(item)}>
                                             <View style={styles.itemPanel}>
                                                 <View style={{ flexDirection: 'row', width: '100%' }}>
@@ -102,7 +55,7 @@ class Booking extends Component {
                                                     </View>
                                                     <View style={{ marginLeft: 20 }}>
                                                         <Text style={{ fontSize: 12, color: '#888' }}>Pickup Location</Text>
-                                                        <Text style={{ fontSize: 14, fontWeight: 'bold', color: '#000' }}>{item.source_address.substr(1, 30)}</Text>
+                                                        <Text style={{ fontSize: 14, fontWeight: 'bold', color: '#000' }}>{item.pickup}</Text>
                                                     </View>
                                                 </View>
                                                 <View style={{ borderLeftWidth: 1, borderColor: '#AAA', height: 40, marginLeft: 5 }} />
@@ -110,7 +63,7 @@ class Booking extends Component {
                                                     <Icon name='map-marker' type='font-awesome' color='#02B06F' size={20} />
                                                     <View style={{ marginLeft: 20 }}>
                                                         <Text style={{ fontSize: 12, color: '#888' }}>Destination Location</Text>
-                                                        <Text style={{ fontSize: 14, fontWeight: 'bold', color: '#000' }}>{item.dest_address.substr(1, 30)}</Text>
+                                                        <Text style={{ fontSize: 14, fontWeight: 'bold', color: '#000' }}>{item.destination}</Text>
                                                     </View>
                                                 </View>
                                             </View>
@@ -125,7 +78,6 @@ class Booking extends Component {
         )
     }
     renderHistory() {
-        const { histories } = this.state;
         return (
             <View style={{ backgroundColor: '#D5D5D5', flex: 1 }}>
                 <ScrollView>
@@ -134,7 +86,7 @@ class Booking extends Component {
                             histories.map((item, key) => {
                                 return (
                                     <View style={{ width: '100%', marginTop: 20, marginBottom: 10 }}>
-                                        <Text>{item.book_date} - {item.book_time}</Text>
+                                        <Text>{item.date}</Text>
                                         <TouchableOpacity onPress={() => this.onDetail(item)}>
                                             <View style={styles.itemPanel}>
                                                 <View style={{ flexDirection: 'row', width: '100%' }}>
@@ -144,7 +96,7 @@ class Booking extends Component {
                                                     </View>
                                                     <View style={{ marginLeft: 20 }}>
                                                         <Text style={{ fontSize: 12, color: '#888' }}>Pickup Location</Text>
-                                                        <Text style={{ fontSize: 14, fontWeight: 'bold', color: '#000' }}>{item.source_address.substr(1, 30)}</Text>
+                                                        <Text style={{ fontSize: 14, fontWeight: 'bold', color: '#000' }}>{item.pickup}</Text>
                                                     </View>
                                                 </View>
                                                 <View style={{ borderLeftWidth: 1, borderColor: '#AAA', height: 40, marginLeft: 5 }} />
@@ -152,7 +104,7 @@ class Booking extends Component {
                                                     <Icon name='map-marker' type='font-awesome' color='#02B06F' size={20} />
                                                     <View style={{ marginLeft: 20 }}>
                                                         <Text style={{ fontSize: 12, color: '#888' }}>Destination Location</Text>
-                                                        <Text style={{ fontSize: 14, fontWeight: 'bold', color: '#000' }}>{item.dest_address.substr(1, 30)}</Text>
+                                                        <Text style={{ fontSize: 14, fontWeight: 'bold', color: '#000' }}>{item.destination}</Text>
                                                     </View>
                                                 </View>
                                             </View>
@@ -168,11 +120,10 @@ class Booking extends Component {
     }
 
     onDetail(item) {
-        this.setState({ isDetail: true, driver_info: item })
+        this.setState({ isDetail: true })
     }
 
     renderDetail() {
-        const { driver_info } = this.state;
         return (
             <View style={{ display: 'flex', position: 'absolute', justifyContent: 'center', alignItems: 'center', width: wp('100.0%'), height: hp('100.0%'), backgroundColor: '#000000BF', zIndex: 1000 }}>
                 <View style={{ width: '80%', height: '80%', backgroundColor: '#FFF' }}>
@@ -183,19 +134,19 @@ class Booking extends Component {
                     </View>
                     <View style={{ alignItems: 'center' }}>
                         <Image
-                            source={driver_info.driver_image == null ? images.img_driver : { uri: configs.baseURL + '/uploads/' + driver_info.driver_image }}
+                            source={require('../../assets/images/profilePic.png')}
                             style={{ width: 80, height: 80, borderRadius: 30 }}
                         />
                         <View style={styles.rating}>
-                            <Text style={{ color: '#FFF', fontWeight: 'bold' }}>{driver_info.driver_ratings}</Text>
+                            <Text style={{ color: '#FFF', fontWeight: 'bold' }}>4.9</Text>
                         </View>
-                        <Text style={{ marginTop: -20, fontSize: 20, fontWeight: 'bold' }}>{driver_info.driver_name}</Text>
-                        <Text style={{ fontSize: 17, color: '#888' }}>{"XYZ-182"}</Text>
+                        <Text style={{ marginTop: -20, fontSize: 20, fontWeight: 'bold' }}>George Fdwards</Text>
+                        <Text style={{ fontSize: 17, color: '#888' }}>XYZ-182</Text>
                         <View style={{ marginTop: 10 }}>
-                            <Rating rating={driver_info.driver_ratings} />
+                            <Rating rating={3.5} />
                         </View>
                         <View style={{ width: '100%', padding: 30 }}>
-                            <Text style={{ marginLeft: 30, marginBottom: 10 }}>{driver_info.book_date} - {driver_info.book_time}</Text>
+                            <Text style={{ marginLeft: 30, marginBottom: 10 }}>{this.state.date}</Text>
                             <View style={{ flexDirection: 'row', width: '100%' }}>
                                 <View>
                                     <Icon name='circle' type='font-awesome' color='#02B06F' size={15} />
@@ -203,7 +154,7 @@ class Booking extends Component {
                                 </View>
                                 <View style={{ marginLeft: 20 }}>
                                     <Text style={{ fontSize: 12, color: '#888' }}>Pickup Location</Text>
-                                    <Text style={{ fontSize: 14, fontWeight: 'bold', color: '#000' }}>{driver_info.source_address.substr(1, 25)}</Text>
+                                    <Text style={{ fontSize: 14, fontWeight: 'bold', color: '#000' }}>{this.state.pickup}</Text>
                                 </View>
                             </View>
                             <View style={{ borderLeftWidth: 1, borderColor: '#AAA', height: 15, marginLeft: 5 }} />
@@ -211,7 +162,7 @@ class Booking extends Component {
                                 <Icon name='map-marker' type='font-awesome' color='#02B06F' size={20} />
                                 <View style={{ marginLeft: 20 }}>
                                     <Text style={{ fontSize: 12, color: '#888' }}>Destination Location</Text>
-                                    <Text style={{ fontSize: 14, fontWeight: 'bold', color: '#000' }}>{driver_info.dest_address.substr(1, 25)}</Text>
+                                    <Text style={{ fontSize: 14, fontWeight: 'bold', color: '#000' }}>{this.state.destination}</Text>
                                 </View>
                             </View>
                         </View>
@@ -223,7 +174,7 @@ class Booking extends Component {
                             <View style={{ width: 15, height: 30, backgroundColor: '#000000BF', borderTopLeftRadius: 15, borderBottomLeftRadius: 15 }} />
                         </View>
                         <Text style={{ marginTop: 20, fontSize: 15, color: '#888' }}>Ride Cost</Text>
-                        <Text style={{ fontSize: 25, fontWeight: 'bold' }}>${driver_info.amount}</Text>
+                        <Text style={{ fontSize: 25, fontWeight: 'bold' }}>$48.98</Text>
                     </View>
                 </View>
             </View>
@@ -232,9 +183,9 @@ class Booking extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <StatusBar hidden={false} translucent backgroundColor="transparent" />
+                <StatusBar translucent backgroundColor="transparent" />
                 <SafeAreaView style={{ flex: 1 }}>
-                    {this.renderHeader()}
+                    <Header title="Booking" isStatus="back-circle" navigation={this.props.navigation} />
                     <View style={styles.topTab}>
                         <TouchableOpacity style={this.state.tab == 1 ? styles.selTab : styles.tab} onPress={() => this.setState({ tab: 1 })}>
                             <Text style={this.state.tab == 1 ? { color: '#03B273' } : { color: '#000' }}>Upcoming</Text>
@@ -253,7 +204,6 @@ class Booking extends Component {
                         this.renderDetail()
                         : null
                 }
-                <Loading loading={this.state.loading} />
             </View>
         );
     }
@@ -262,28 +212,6 @@ class Booking extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1
-    },
-    header: {
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: wp('100.0%'),
-        paddingLeft: 20,
-        paddingRight: 20,
-        height: Platform.OS === 'ios' ? 70 : 70
-    },
-    menuBTN: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: "#FFF949",
-        width: 40,
-        height: 40,
-        borderRadius: 50,
-        shadowColor: '#000',
-        shadowOpacity: 0.8,
-        shadowOffset: { height: 1, width: 1 },
-        shadowRadius: 2,
-        elevation: 10,
     },
     topTab: {
         flexDirection: 'row',
@@ -318,7 +246,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#FFF',
         marginTop: 10,
         padding: 30,
-        shadowColor: '#000',
+        shadowColor: '#00F561',
         shadowOpacity: 0.8,
         shadowOffset: { height: 1, width: 1 },
         shadowRadius: 2,
@@ -431,10 +359,3 @@ const styles = StyleSheet.create({
         elevation: 5,
     },
 });
-
-const mapStateToProps = state => {
-    return {
-        user_info: state.account.user_info
-    }
-}
-export default connect(mapStateToProps, undefined)(Booking)

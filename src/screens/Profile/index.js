@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from "react";
 import {
     StyleSheet,
     SafeAreaView,
@@ -9,17 +9,11 @@ import {
     StatusBar,
 } from "react-native";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { Icon } from 'react-native-elements';
-import ToggleSwitch from 'toggle-switch-react-native';
+import { Icon } from 'react-native-elements'
 
-import { connect } from 'react-redux';
-import { colors } from '@constants/theme';
-import images from '@constants/images';
-import configs from '@constants/configs';
-import language from '@constants/language';
-import API from '@services/API';
+import { Header } from '@components';
 
-class Profile extends React.Component {
+export default class Profile extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -27,51 +21,19 @@ class Profile extends React.Component {
         }
     }
 
-    renderHeader() {
-        return (
-            <View style={[styles.header, { zIndex: 1000 }]}>
-                <View style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'flex-end', marginBottom: 2 }}>
-                    <TouchableOpacity
-                        style={{
-                            width: 40,
-                            height: 40,
-                            backgroundColor: '#FFF949',
-                            borderRadius: 20,
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            shadowColor: '#000',
-                            shadowOpacity: 0.8,
-                            shadowOffset: { height: 1, width: 1 },
-                            shadowRadius: 2,
-                            elevation: 5,
-                        }}
-                        onPress={() => this.props.navigation.goBack()}>
-                        <Image
-                            style={{ width: 15, height: 15, tintColor: 'rgba(0, 0, 0, 1)' }}
-                            source={images.icon_back} />
-                    </TouchableOpacity>
-                </View>
-                <View style={{ flex: 9, justifyContent: 'center' }}>
-                    <Text style={{ marginLeft: 20, fontSize: 16, fontWeight: 'bold', color: '#000' }}>My Profile</Text>
-                </View>
-            </View>
-        );
-    }
-
     render() {
-        const { user_info } = this.props;
         return (
             <View style={styles.container}>
-                <StatusBar hidden={false} translucent backgroundColor="transparent" />
+                <StatusBar translucent backgroundColor="transparent" />
                 <SafeAreaView style={{ flex: 1 }}>
-                    {this.renderHeader()}
-                    <View style={{ paddingBottom: 20, width: '100%', alignItems: 'center' }}>
+                    <Header title="My Profile" isStatus="back-circle" navigation={this.props.navigation} />
+                    <View style={{ padding: 20, width: '100%', alignItems: 'center' }}>
                         <Image
-                            source={user_info.profile_pic == null ? images.img_avatar : { uri: configs.baseURL + '/uploads/' + user_info.profile_pic }}
+                            source={require('@assets/images/profilePic.png')}
                             style={{ width: 100, height: 100, borderRadius: 50 }}
                         />
-                        <Text style={{ marginTop: 10, fontSize: 20, fontWeight: 'bold' }}>{user_info.user_name}</Text>
-                        <Text style={{ fontSize: 17, color: '#888' }}>{user_info.email}</Text>
+                        <Text style={{ marginTop: 10, fontSize: 20, fontWeight: 'bold' }}>Vanessa Donovan</Text>
+                        <Text style={{ fontSize: 17, color: '#888' }}>+00 984 979 137</Text>
                     </View>
                     <View style={{ flex: 1, padding: 20, width: '100%', alignItems: 'center', backgroundColor: '#D8D8D8' }}>
                         <TouchableOpacity style={{
@@ -81,11 +43,11 @@ class Profile extends React.Component {
                             backgroundColor: '#FFF',
                             borderBottomWidth: 1,
                             borderBottomColor: '#D8D8D8',
-                            paddingLeft: 20, paddingRight: 20
+                            padding: 20
                         }}>
                             <Icon name='user-o' type='font-awesome' color='#888' size={20} />
                             <Text style={{ width: '40%' }}>Full Name</Text>
-                            <Text style={{ width: '40%', color: '#888', textAlign: 'right' }}>{user_info.user_name}</Text>
+                            <Text style={{ width: '40%', color: '#888', textAlign: 'right' }}>Vanessa Donovan</Text>
                             <Icon name='caret-right' type='font-awesome' color='#019E4C' size={20} />
                         </TouchableOpacity>
                         <TouchableOpacity style={{
@@ -95,11 +57,11 @@ class Profile extends React.Component {
                             backgroundColor: '#FFF',
                             borderBottomWidth: 1,
                             borderBottomColor: '#D8D8D8',
-                            paddingLeft: 20, paddingRight: 20
+                            padding: 20
                         }}>
-                            <Icon name='envelope-o' type='font-awesome' color='#888' size={18} />
+                            <Icon name='envelope-o' type='font-awesome' color='#888' size={20} />
                             <Text style={{ width: '40%' }}>Email Address</Text>
-                            <Text style={{ width: '40%', color: '#888', textAlign: 'right' }}>{user_info.email}</Text>
+                            <Text style={{ width: '40%', color: '#888', textAlign: 'right' }}>vanessadon...</Text>
                             <Icon name='caret-right' type='font-awesome' color='#019E4C' size={20} />
                         </TouchableOpacity>
                         <TouchableOpacity style={{
@@ -109,11 +71,11 @@ class Profile extends React.Component {
                             backgroundColor: '#FFF',
                             borderBottomWidth: 1,
                             borderBottomColor: '#D8D8D8',
-                            paddingLeft: 20, paddingRight: 20
+                            padding: 20
                         }}>
-                            <Icon name='mobile' type='font-awesome' color='#888' size={25} />
+                            <Icon name='mobile' type='font-awesome' color='#888' size={20} />
                             <Text style={{ width: '40%' }}>Mobile Number</Text>
-                            <Text style={{ width: '40%', color: '#888', textAlign: 'right' }}>{user_info.mobno}</Text>
+                            <Text style={{ width: '40%', color: '#888', textAlign: 'right' }}>+00 984 979 137</Text>
                             <Icon name='caret-right' type='font-awesome' color='#019E4C' size={20} />
                         </TouchableOpacity>
                         <TouchableOpacity style={{
@@ -122,10 +84,10 @@ class Profile extends React.Component {
                             width: '100%', height: 50,
                             backgroundColor: '#FFF',
                             borderwidth: 1,
-                            paddingLeft: 20, paddingRight: 20
-                        }} onPress={() => this.props.navigation.push('Password')}>
+                            padding: 20
+                        }} onPress={() => this.props.navigation.navigate('Password')}>
                             <Icon name='lock' type='font-awesome' color='#888' size={20} />
-                            <Text style={{ width: '85%', marginLeft: -5 }}>Update Password</Text>
+                            <Text style={{ width: '85%' }}>Update Password</Text>
                             <Icon name='caret-right' type='font-awesome' color='#019E4C' size={20} />
                         </TouchableOpacity>
                         <TouchableOpacity style={{
@@ -135,19 +97,12 @@ class Profile extends React.Component {
                             backgroundColor: '#FFF',
                             borderwidth: 1,
                             marginTop: 20,
-                            paddingLeft: 20, paddingRight: 20
+                            padding: 20
                         }}>
-                            <View style={{ flexDirection: 'row', marginLeft: -5 }}>
-                                <Icon name='bell-o' type='font-awesome' color='#888' size={20} />
-                                <Text style={{ marginLeft: 5 }}>Notification</Text>
-                            </View>
-                            <ToggleSwitch
-                                isOn={this.state.notification}
-                                onColor={'#01A457'}
-                                offColor={'#F1362F'}
-                                size="small"
-                                onToggle={isOn => this.setState({ notification: isOn })}
-                            />
+                            <Icon name='bell-o' type='font-awesome' color='#888' size={20} />
+                            <Text style={{ width: '40%' }}>Notification</Text>
+                            <Text style={{ width: '40%', color: '#888', textAlign: 'right' }}>Vanessa Donovan</Text>
+                            <Icon name='caret-right' type='font-awesome' color='#019E4C' size={20} />
                         </TouchableOpacity>
                     </View>
                 </SafeAreaView>
@@ -159,28 +114,6 @@ class Profile extends React.Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1
-    },
-    header: {
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: wp('100.0%'),
-        paddingLeft: 20,
-        paddingRight: 20,
-        height: Platform.OS === 'ios' ? 70 : 70
-    },
-    menuBTN: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: "#FFF949",
-        width: 40,
-        height: 40,
-        borderRadius: 50,
-        shadowColor: '#000',
-        shadowOpacity: 0.8,
-        shadowOffset: { height: 1, width: 1 },
-        shadowRadius: 2,
-        elevation: 10,
     },
     topTab: {
         flexDirection: 'row',
@@ -242,10 +175,3 @@ const styles = StyleSheet.create({
         elevation: 10,
     },
 });
-
-const mapStateToProps = state => {
-    return {
-        user_info: state.account.user_info
-    }
-}
-export default connect(mapStateToProps, undefined)(Profile)
