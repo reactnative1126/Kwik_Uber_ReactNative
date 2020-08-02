@@ -1,0 +1,6 @@
+export default {
+    SET_USER: 'SET_USER',
+    SIGN_OUT: 'SIGN_OUT',
+    SET_DEVICE_TOKEN: 'SET_DEVICE_TOKEN',
+    SET_DRIVER: 'SET_DRIVER'
+}

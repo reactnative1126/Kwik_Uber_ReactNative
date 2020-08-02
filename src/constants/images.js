@@ -1,0 +1,25 @@
+export default {
+    img_background: require("@assets/images/background.png"),
+    img_logo: require('@assets/images/applogo.png'),
+    img_loading: require('@assets/images/loader8.gif'),
+    
+    
+    icon_app: require('@assets/images/appIcon.png'),
+    icon_arrow: require('@assets/icons/arrow.png'),
+    icon_back: require('@assets/icons/back.png'),
+    icon_user: require('@assets/icons/user.png'),
+    icon_mail: require('@assets/icons/mail.png'),
+    icon_FB: require('@assets/icons/facebook.png'),
+    icon_menu: require('@assets/icons/target.png'),
+    icon_bell: require('@assets/icons/bell.png'),
+    icon_title: require('@assets/icons/title.png'),
+    icon_car: require('@assets/icons/car.png'),
+    icon_plus: require('@assets/icons/plus.png'),
+    icon_coin: require('@assets/icons/coin.png'),
+    icon_edit: require('@assets/icons/edit.png'),
+    icon_visa: require('@assets/icons/visa.png'),
+    img_uber: require('@assets/images/uber.png'),
+    img_lyft: require('@assets/images/lyft.png'),
+    img_driver: require('@assets/images/driver.png'),
+    img_avatar: require('@assets/images/customer.png'),
+}
