@@ -27,7 +27,7 @@ class Signup extends React.Component {
         }
     }
 
-    async onRegister(name, email, mobile, password) {
+    async onRegister(name, email, mobile, password, image) {
         this.setState({ loading: true });
         await Geolocation.getCurrentPosition((position) => {
             Geocoder.init(configs.google_map_key);
@@ -37,12 +37,13 @@ class Signup extends React.Component {
             }).then(json => {
                 firebase.auth().createUserWithEmailAndPassword(email, password).then((resp) => {
                     API.post('/user_register', {
-                        user_type: 'C',
+                        user_type: 'D',
                         user_name: name,
                         user_uid: resp.user.uid,
                         email: email,
                         mobno: mobile,
                         password: password,
+                        license_image: '',
                         gender: 1,
                         address: json.results[0].formatted_address,
                         mode: Platform.OS,
@@ -53,10 +54,9 @@ class Signup extends React.Component {
                             // console.log(JSON.stringify(resp));
                             // setClientToken(resp.data.data.userinfo.api_token);
                             AsyncStorage.setItem('logged', 'true');
-                            this.setState({ loading: false });
                             AsyncStorage.setItem('user_info', JSON.stringify(resp.data.data.userinfo));
                             this.props.setUser(resp.data.data.userinfo);
-                            this.props.navigation.navigate('App');
+                            this.props.navigation.pop();
                         } else {
                             this.setState({ loading: false });
                             this.refs.toast.show(resp.data.message, DURATION.LENGTH_LONG);
@@ -82,7 +82,7 @@ class Signup extends React.Component {
     render() {
         return (
             <View style={styles.container} >
-                <Register onRegister={(name, email, mobile, password) => this.onRegister(name, email, mobile, password)} navigation={this.props.navigation} />
+                <Register onRegister={(name, email, mobile, password, image) => this.onRegister(name, email, mobile, password, image)} navigation={this.props.navigation} />
                 <Loading loading={this.state.loading} />
                 <Toast
                     ref="toast"

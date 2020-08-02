@@ -10,8 +10,8 @@ import {
 
 import firebase from 'react-native-firebase';
 import { connect } from 'react-redux';
-import { setUser, setDriver, setDeviceToken } from '@modules/account/actions';
-import { setBooking } from '@modules/booking/actions';
+import { setUser, setCustomer, setDeviceToken } from '@modules/account/actions';
+import { setBooking, setNotification } from '@modules/booking/actions';
 import { theme, colors } from '@constants/theme';
 import images from '@constants/images';
 import configs from '@constants/configs';
@@ -41,7 +41,7 @@ class Splash extends Component {
                 }
             }).catch(error => {
                 console.log("Permission rejected ", error);
-            });
+            })
     }
 
     requestPermission = async () => {
@@ -51,7 +51,7 @@ class Splash extends Component {
             }).catch(error => {
                 this.getToken();
                 console.log("Request Permission rejected ", error);
-            });
+            })
     }
 
     getToken = async () => {
@@ -81,6 +81,7 @@ class Splash extends Component {
     }
 
     messageListener = async () => {
+
         // This listener triggered when notification has been received in foreground
         this.notificationListener = firebase.notifications().onNotification((notification) => {
             const { title, body, data } = notification;
@@ -96,54 +97,17 @@ class Splash extends Component {
         if (notificationOpen) {
             const { title, body, data } = notificationOpen;
             this.displayNotification(title, body, data);
-        };
+        }
     }
 
     displayNotification(title, body, data) {
-        console.log(data);
-        if (data.key == 'accept_ride_notification') {
-            Alert.alert(
-                title,
-                body,
-                [
-                    {
-                        text: 'GOT IT',
-                        onPress: () => {
-                            this.props.setBooking(JSON.parse(data.data).riderequest_info);
-                            this.props.setDriver(JSON.parse(data.data).driver_details);
-                            this.props.navigation.navigate('Track');
-                        },
-                        style: 'cancel'
-                    }
-                ],
-            )
-        } else if (data.key == 'ride_completed_notification') {
-            Alert.alert(
-                title,
-                body,
-                [
-                    {
-                        text: 'GOT IT',
-                        onPress: () => {
-                            this.props.setBooking(JSON.parse(data.data).riderequest_info);
-                            this.props.setDriver(JSON.parse(data.data).driver_details);
-                            this.props.navigation.navigate('Rating');
-                        },
-                        style: 'cancel'
-                    }
-                ],
-            )
-        } else {
-            Alert.alert(
-                title,
-                body,
-                [
-                    {
-                        text: 'GOT IT',
-                        style: 'cancel'
-                    }
-                ],
-            )
+        // we display notification in alert box with title and body
+        if (data.key == 'book_now_notification' || data.key == 'book_later_notification') {
+            this.props.setNotification(data.key);
+            this.props.setBooking(JSON.parse(data.booking_info));
+            this.props.setCustomer(JSON.parse(data.customer_info));
+            this.props.navigation.navigate('App');
+            // this.props.navigation.reset({ routes: [{ name: 'App'}] });
         }
     }
 
@@ -173,11 +137,14 @@ const mapDispatchToProps = dispatch => {
         setUser: (data) => {
             dispatch(setUser(data))
         },
-        setDriver: (data) => {
-            dispatch(setDriver(data))
+        setCustomer: (data) => {
+            dispatch(setCustomer(data))
         },
         setBooking: (data) => {
             dispatch(setBooking(data))
+        },
+        setNotification: (data) => {
+            dispatch(setNotification(data))
         }
     }
 }

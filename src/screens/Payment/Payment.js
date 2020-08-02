@@ -246,8 +246,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
     return {
-        logged: state.account.logged,
-        userinfo: state.account.userinfo
+        user_info: state.account.user_info
     }
 }
 export default connect(mapStateToProps, undefined)(Payment)

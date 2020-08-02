@@ -28,8 +28,6 @@ PODS:
     - FBSDKShareKit/Share (= 7.1.0)
   - FBSDKShareKit/Share (7.1.0):
     - FBSDKCoreKit (~> 7.1.0)
-  - Firebase/Analytics (6.3.0):
-    - Firebase/Core
   - Firebase/Core (6.3.0):
     - Firebase/CoreOnly
     - FirebaseAnalytics (= 6.0.2)
@@ -458,9 +456,23 @@ PODS:
     - React
   - RNGestureHandler (1.6.1):
     - React
+  - RNImageCropPicker (0.32.0):
+    - React-Core
+    - React-RCTImage
+    - RNImageCropPicker/QBImagePickerController (= 0.32.0)
+    - TOCropViewController
+  - RNImageCropPicker/QBImagePickerController (0.32.0):
+    - React-Core
+    - React-RCTImage
+    - TOCropViewController
   - RNReanimated (1.9.0):
     - React
   - RNScreens (2.9.0):
+    - React
+  - RNSound (0.11.0):
+    - React
+    - RNSound/Core (= 0.11.0)
+  - RNSound/Core (0.11.0):
     - React
   - RNVectorIcons (6.6.0):
     - React
@@ -468,6 +480,7 @@ PODS:
   - tipsi-stripe (7.5.3):
     - React
     - Stripe (~> 14.0.1)
+  - TOCropViewController (2.5.3)
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
     - Yoga (~> 1.14)
@@ -476,7 +489,6 @@ DEPENDENCIES:
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
   - FBReactNativeSpec (from `../node_modules/react-native/Libraries/FBReactNativeSpec`)
-  - Firebase/Analytics (~> 6.3.0)
   - Firebase/Core (~> 6.3.0)
   - Firebase/Database (~> 6.3.0)
   - Firebase/Functions (~> 6.3.0)
@@ -536,8 +548,10 @@ DEPENDENCIES:
   - "RNDateTimePicker (from `../node_modules/@react-native-community/datetimepicker`)"
   - RNFirebase (from `../node_modules/react-native-firebase/ios`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
+  - RNImageCropPicker (from `../node_modules/react-native-image-crop-picker`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
+  - RNSound (from `../node_modules/react-native-sound`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - Stripe (~> 14.0.0)
   - tipsi-stripe (from `../node_modules/tipsi-stripe`)
@@ -580,6 +594,7 @@ SPEC REPOS:
     - PromisesObjC
     - Protobuf
     - Stripe
+    - TOCropViewController
     - YogaKit
 
 EXTERNAL SOURCES:
@@ -653,10 +668,14 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-firebase/ios"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
+  RNImageCropPicker:
+    :path: "../node_modules/react-native-image-crop-picker"
   RNReanimated:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
     :path: "../node_modules/react-native-screens"
+  RNSound:
+    :path: "../node_modules/react-native-sound"
   RNVectorIcons:
     :path: "../node_modules/react-native-vector-icons"
   tipsi-stripe:
@@ -734,14 +753,17 @@ SPEC CHECKSUMS:
   RNDateTimePicker: aae6a45c4ddb5125f3c7a39683e21c34c25cda45
   RNFirebase: 37daa9a346d070f9f6ee1f3b4aaf4c8e3b1d5d1c
   RNGestureHandler: 8f09cd560f8d533eb36da5a6c5a843af9f056b38
+  RNImageCropPicker: fc4b4d2a4d7176eeb6442fa191ba56493c14b6d6
   RNReanimated: b5ccb50650ba06f6e749c7c329a1bc3ae0c88b43
   RNScreens: c526239bbe0e957b988dacc8d75ac94ec9cb19da
+  RNSound: c980916b596cc15c8dcd2f6ecd3b13c4881dbe20
   RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4
   Stripe: 4305b646743612854819fb5d5cf67aaeb93577c0
   tipsi-stripe: 41299d30e9b906413315eeb1b94607aaac9b6781
+  TOCropViewController: 20a14b6a7a098308bf369e7c8d700dc983a974e6
   Yoga: 3ebccbdd559724312790e7742142d062476b698e
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 03ae46c560d06693dad850aa5d12fc1d8ae6939f
+PODFILE CHECKSUM: 589e9e266d15157d5cfebef708fa0afc938ea3cc
 
 COCOAPODS: 1.9.1

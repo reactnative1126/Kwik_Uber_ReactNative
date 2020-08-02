@@ -63,7 +63,7 @@ class Stripe extends Component {
             var totalPrice = this.state.amount;
             const token = await stripe.createTokenWithCard(this.state.params);
             alert(token.tokenId);
-            await axios({
+            axios({
                 method: 'POST',
                 url: 'http://localhost:5000/kwik-35758/us-central1/paymentWithStripe',
                 data: {

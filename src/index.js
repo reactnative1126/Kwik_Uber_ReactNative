@@ -14,8 +14,8 @@ if (!firebase.apps.length) {
     projectId: "kwik-35758",
     storageBucket: "kwik-35758.appspot.com",
     messagingSenderId: "823801675801",
-    appId: "1:823801675801:web:957693dfffe871d0a7aa88",
-    measurementId: "G-DR0CT23XH9"
+    appId: "1:823801675801:web:ddbd391ba348d148a7aa88",
+    measurementId: "G-KHE3P3DWD6"
   })
 }
 

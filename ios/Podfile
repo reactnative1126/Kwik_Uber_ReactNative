@@ -44,8 +44,8 @@ def flipper_post_install(installer)
   end
 end
 
-target 'kwikco' do
-  # Pods for kwikco
+target 'kwikgo' do
+  # Pods for kwikgo
   pod 'FBLazyVector', :path => "../node_modules/react-native/Libraries/FBLazyVector"
   pod 'FBReactNativeSpec', :path => "../node_modules/react-native/Libraries/FBReactNativeSpec"
   pod 'RCTRequired', :path => "../node_modules/react-native/Libraries/RCTRequired"
@@ -80,7 +80,6 @@ target 'kwikco' do
 
   # pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
   pod 'Firebase/Core', '~>6.3.0'
-  pod 'Firebase/Analytics', '~>6.3.0'
   # pod 'Firebase/Auth', '~>6.3.0'
   pod 'Firebase/Database', '~>6.3.0'
   pod 'Firebase/Functions', '~>6.3.0'
@@ -98,7 +97,7 @@ target 'kwikco' do
   pod 'Stripe', '~>14.0.0'
   pod 'tipsi-stripe', :path => '../node_modules/tipsi-stripe'
 
-  target 'kwikcoTests' do
+  target 'kwikgoTests' do
     inherit! :complete
     # Pods for testing
   end
@@ -115,10 +114,10 @@ target 'kwikco' do
   end
 end
 
-target 'kwikco-tvOS' do
-  # Pods for kwikco-tvOS
+target 'kwikgo-tvOS' do
+  # Pods for kwikgo-tvOS
 
-  target 'kwikco-tvOSTests' do
+  target 'kwikgo-tvOSTests' do
     inherit! :search_paths
     # Pods for testing
   end

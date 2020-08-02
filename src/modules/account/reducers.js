@@ -4,7 +4,7 @@ const initialState = {
     logged: false,
     device_token: null,
     user_info: null,
-    driver_info: null
+    customer_info: null
 }
 
 export default function accountReducer(state = initialState, action) {
@@ -26,10 +26,10 @@ export default function accountReducer(state = initialState, action) {
                 ...state,
                 device_token: action.payload
             };
-        case types.SET_DRIVER:
+        case types.SET_CUSTOMER:
             return {
                 ...state,
-                driver_info: action.payload
+                customer_info: action.payload
             };
         default:
             return state;
